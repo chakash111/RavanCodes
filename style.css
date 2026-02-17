@@ -143,3 +143,20 @@ p {
 .about-section b {
     color: #00ffcc; /* Web Development aur Music ko highlight karne ke liye */
 }
+/* Poore page ka background effect */
+body {
+    background: radial-gradient(circle at center, #050505 0%, #000 100%);
+    overflow-x: hidden;
+}
+
+/* Card ke piche ek halka neon aura */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    background: linear-gradient(45deg, #00ffcc, #ff00ff, #00ffcc);
+    z-index: -1;
+    filter: blur(20px);
+    opacity: 0.3;
+    border-radius: 20px;
+}
