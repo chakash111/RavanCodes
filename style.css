@@ -77,14 +77,14 @@ p {
     width: 100%;
 }
 
-.music-btn {
-    border-color: #ff00ff !important; /* Pink Neon */
-    color: #ff00ff !important;
-    background: rgba(255, 0, 255, 0.05) !important;
+..music-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
 }
 
-.btn.music-btn:hover {
-    background: #ff00ff !important;
-    color: #000 !important;
-    box-shadow: 0 0 20px #ff00ff !important;
+.music-btn {
+    width: 100%; /* Isse button card ke andar fit ho jayega */
+    max-width: 250px;
 }
