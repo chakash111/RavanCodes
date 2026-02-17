@@ -129,3 +129,17 @@ p {
     color: #bbb;
     line-height: 1.5;
 }
+/* About Section ko center aur saaf dikhane ke liye */
+.about-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+    font-size: 14px;
+    color: #bbb;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.about-section b {
+    color: #00ffcc; /* Web Development aur Music ko highlight karne ke liye */
+}
