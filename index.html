@@ -16,41 +16,52 @@
         <h2>RAVAN</h2>
         <p>Web Developer | Beat Maker</p>
 
-                <div class="social-links">
+        <div class="social-links">
             <a href="#" class="btn insta">Instagram</a>
             <a href="#" class="btn yt">YouTube</a>
         </div>
 
-                <div class="music-section">
-            <audio id="myBeat">
+        <div class="music-section">
+            <audio id="myBeat" preload="auto">
                 <source src="https://files.catbox.moe/qgnhtv.mp3" type="audio/mpeg">
             </audio>
             <button onclick="toggleMusic()" class="btn music-btn" id="pBtn">Play Beat 🎵</button>
         </div>
-                <div class="about-section">
-            <p>👋 Main abhi <b>Web Development</b> aur <b>Music</b> seekh raha hoon. Ye meri pehli website hai jo maine mobile par banayi hai!</p>
-                </div>
-    </div> 
-    <script>
-  var song = document.getElementById("myBeat");
-  var pBtn = document.getElementById("pBtn");
-  var card = document.querySelector(".card"); // Card element pakda
 
-  function toggleMusic() {
-    if (song.readyState < 2) {
-        pBtn.innerHTML = "Loading... ⏳"; // Jab tak file load ho rahi ho
-        return;
-    }
-    
-    if (song.paused) {
-        song.play();
-        pBtn.innerHTML = "Pause Beat ⏸️";
-        card.classList.add("playing");
-    } else {
-        song.pause();
-        pBtn.innerHTML = "Play Beat 🎵";
-        card.classList.remove("playing");
-    }
-}
-</script>
-    
+        <div class="about-section">
+            <p>👋 Main abhi <b>Web Development</b> aur <b>Music</b> seekh raha hoon. Ye meri pehli website hai jo maine mobile par banayi hai!</p>
+        </div>
+    </div>
+
+    <script>
+      var song = document.getElementById("myBeat");
+      var pBtn = document.getElementById("pBtn");
+      var card = document.querySelector(".card");
+
+      // Page khulte hi loading shuru kar do taaki music ready rahe
+      song.load();
+
+      function toggleMusic() {
+        // Agar net slow hai aur file load nahi hui
+        if (song.readyState === 0) {
+          pBtn.innerHTML = "Connecting... 🛰️";
+          return;
+        }
+
+        if (song.paused) {
+          pBtn.innerHTML = "Loading... ⏳";
+          song.play().then(() => {
+            pBtn.innerHTML = "Pause Beat ⏸️";
+            card.classList.add("playing"); // Isse pulse animation chalu hogi
+          }).catch(err => {
+            alert("Bhai, pehle screen par kahin touch karo, phir play dabao!");
+          });
+        } else {
+          song.pause();
+          pBtn.innerHTML = "Play Beat 🎵";
+          card.classList.remove("playing"); // Animation band
+        }
+      }
+    </script>
+</body>
+</html>
