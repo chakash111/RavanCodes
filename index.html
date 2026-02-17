@@ -21,9 +21,9 @@
             <a href="#" class="btn yt">YouTube</a>
         </div>
 
-        <div class="music-section">
+                <div class="music-section">
             <audio id="myBeat">
-                <source src="https://files.catbox.moe/4rnhll.mp3" type="audio/mpeg">
+                <source src="https://files.catbox.moe/4rnh11.mp3" type="audio/mpeg">
             </audio>
             <button onclick="toggleMusic()" class="btn music-btn" id="pBtn">Play Beat 🎵</button>
         </div>
@@ -33,14 +33,19 @@
 
       function toggleMusic() {
         if (song.paused) {
-          song.play().catch(function(error) {
-            console.log("Music play nahi hua: ", error);
-            alert("Bhai, ek baar page par kahin bhi click karke phir Play dabao!");
+          song.play().then(() => {
+            pBtn.innerHTML = "Pause Beat ⏸️";
+            pBtn.style.boxShadow = "0 0 20px #ff00ff"; // Pink glow on play
+          }).catch(error => {
+            alert("Bhai, pehle page par kahin bhi touch karo, phir play dabao!");
           });
-          pBtn.innerHTML = "Pause Beat ⏸️";
         } else {
           song.pause();
           pBtn.innerHTML = "Play Beat 🎵";
+          pBtn.style.boxShadow = "none";
         }
       }
     </script>
+</body>
+</html>
+
