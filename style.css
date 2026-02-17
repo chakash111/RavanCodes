@@ -108,3 +108,24 @@ p {
     color: #000 !important;
     box-shadow: 0 0 20px #ff00ff !important;
 }
+/* Card Pulse Animation jab music baje */
+@keyframes beat {
+    0% { transform: scale(1); box-shadow: 0 0 20px #00ffcc; }
+    50% { transform: scale(1.02); box-shadow: 0 0 40px #00ffcc; }
+    100% { transform: scale(1); box-shadow: 0 0 20px #00ffcc; }
+}
+
+.playing {
+    animation: beat 0.5s infinite; /* Music ki beat jaisa dhak-dhak */
+    border-color: #ff00ff !important; /* Playing ke waqt color change */
+}
+
+/* About Me styling */
+.about-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #333;
+    font-size: 13px;
+    color: #bbb;
+    line-height: 1.5;
+}
