@@ -37,16 +37,20 @@
   var card = document.querySelector(".card"); // Card element pakda
 
   function toggleMusic() {
-    if (song.paused) {
-      song.play().then(() => {
-        pBtn.innerHTML = "Pause Beat ⏸️";
-        card.classList.add("playing"); // Animation chalu
-      }).catch(err => alert("Pehle page tap karo!"));
-    } else {
-      song.pause();
-      pBtn.innerHTML = "Play Beat 🎵";
-      card.classList.remove("playing"); // Animation band
+    if (song.readyState < 2) {
+        pBtn.innerHTML = "Loading... ⏳"; // Jab tak file load ho rahi ho
+        return;
     }
-  }
+    
+    if (song.paused) {
+        song.play();
+        pBtn.innerHTML = "Pause Beat ⏸️";
+        card.classList.add("playing");
+    } else {
+        song.pause();
+        pBtn.innerHTML = "Play Beat 🎵";
+        card.classList.remove("playing");
+    }
+}
 </script>
-
+    
