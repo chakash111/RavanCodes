@@ -72,3 +72,19 @@ p {
     color: #000;
     box-shadow: 0 0 20px #00ffcc;
 }
+.music-section {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.music-btn {
+    border-color: #ff00ff !important; /* Pink Neon */
+    color: #ff00ff !important;
+    background: rgba(255, 0, 255, 0.05) !important;
+}
+
+.btn.music-btn:hover {
+    background: #ff00ff !important;
+    color: #000 !important;
+    box-shadow: 0 0 20px #ff00ff !important;
+}
