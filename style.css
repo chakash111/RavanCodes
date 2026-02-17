@@ -21,13 +21,43 @@ body {
     to { background-position: 550px 550px, 390px 410px, 380px 820px; }
 }
 
-/* Card ko thoda aur chamkao */
+/* Card ka look aur RGB Animation */
 .card {
-    backdrop-filter: blur(10px); /* Piche ka background halka dhundla dikhega */
-    background: rgba(10, 10, 10, 0.8);
-    border: 2px solid #00ffcc;
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3), inset 0 0 10px rgba(0, 255, 204, 0.1);
+    width: 90%; 
+    max-width: 350px;
+    padding: 25px;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    position: relative;
+    text-align: center;
+    z-index: 1;
+    /* Neon Border jo color badlega */
+    border: 3px solid #00ffcc; 
+    animation: rgbBorder 5s linear infinite; 
 }
+
+/* RGB Color Changing Logic */
+@keyframes rgbBorder {
+    0% { border-color: #00ffcc; box-shadow: 0 0 15px #00ffcc; }
+    33% { border-color: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
+    66% { border-color: #ffff00; box-shadow: 0 0 15px #ffff00; }
+    100% { border-color: #00ffcc; box-shadow: 0 0 15px #00ffcc; }
+}
+
+/* Card ke title (RAVAN) ko bhi thoda chamkao */
+h2 {
+    font-size: 28px;
+    color: #fff;
+    text-shadow: 0 0 10px #00ffcc;
+    animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+    from { text-shadow: 0 0 10px #00ffcc; }
+    to { text-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
+}
+
 
 /* Photo Styling */
 .profile-img img {
