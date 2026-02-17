@@ -88,3 +88,23 @@ p {
     width: 100%; /* Isse button card ke andar fit ho jayega */
     max-width: 250px;
 }
+.music-section {
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.music-btn {
+    width: 100%;
+    border-color: #ff00ff !important;
+    color: #ff00ff !important;
+    background: rgba(255, 0, 255, 0.05) !important;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+}
+
+.music-btn:hover {
+    background: #ff00ff !important;
+    color: #000 !important;
+    box-shadow: 0 0 20px #ff00ff !important;
+}
