@@ -31,27 +31,18 @@
     <script>
   var song = document.getElementById("myBeat");
   var pBtn = document.getElementById("pBtn");
-
-  // Pehle music ko load hone do
-  song.load();
+  var card = document.querySelector(".card"); // Card element pakda
 
   function toggleMusic() {
-    // Agar music paused hai toh play karo
     if (song.paused) {
       song.play().then(() => {
-        // Agar play ho gaya toh button change karo
         pBtn.innerHTML = "Pause Beat ⏸️";
-        pBtn.style.boxShadow = "0 0 20px #ff00ff";
-      }).catch(error => {
-        // Sirf tab alert dikhao jab browser mana kare
-        console.log("Playback error: ", error);
-        alert("Bhai, pehle 'RAVAN' par ek baar touch karo, phir play dabao!");
-      });
+        card.classList.add("playing"); // Animation chalu
+      }).catch(err => alert("Pehle page tap karo!"));
     } else {
-      // Agar music chal raha hai toh pause karo
       song.pause();
       pBtn.innerHTML = "Play Beat 🎵";
-      pBtn.style.boxShadow = "none";
+      card.classList.remove("playing"); // Animation band
     }
   }
 </script>
