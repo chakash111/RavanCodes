@@ -1,30 +1,32 @@
-/* Purane body code ko isse replace karein */
 body {
-    background-color: #050505; /* Ekdum dark black */
+    background: #000; /* Ekdum kaala background */
     background-image: 
-        radial-gradient(circle at center, #111 0%, #000 100%),
-        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px);
-    background-size: 100% 100%, 100px 100px; /* Chote sitare */
-    background-attachment: fixed;
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    animation: galaxyMove 60s linear infinite; /* Background dheere-dheere chalega */
+    
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
-/* Card ke charo taraf ek halka sa glow aur dalo */
+@keyframes galaxyMove {
+    from { background-position: 0 0, 40px 60px, 130px 270px; }
+    to { background-position: 550px 550px, 390px 410px, 380px 820px; }
+}
+
+/* Card ko thoda aur chamkao */
 .card {
-    position: relative;
-    background: rgba(20, 20, 20, 0.9); /* Thoda transparent black */
+    backdrop-filter: blur(10px); /* Piche ka background halka dhundla dikhega */
+    background: rgba(10, 10, 10, 0.8);
     border: 2px solid #00ffcc;
-    border-radius: 20px;
-    padding: 30px;
-    width: 320px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(0, 255, 204, 0.2); /* Neon aura */
-    z-index: 1;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.3), inset 0 0 10px rgba(0, 255, 204, 0.1);
 }
 
 /* Photo Styling */
