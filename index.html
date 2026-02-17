@@ -16,18 +16,31 @@
         <h2>RAVAN</h2>
         <p>Web Developer | Beat Maker</p>
 
-        <div class="social-links">
+                <div class="social-links">
             <a href="#" class="btn insta">Instagram</a>
             <a href="#" class="btn yt">YouTube</a>
         </div>
-    </div>
 
-</body>
-</html>
-<div class="music-section">
-    <audio id="myBeat">
-        <source src="https://docs.google.com/uc?export=download&id=1yNEAGddJ-3KG5ENRG9fUtM9Dc0qejJK1" type="audio/mpeg">
-<audio id="myBeat" preload="auto">
- <source src="https://docs.google.com/uc?export=open&id=1yNEAGddJ-3KG5ENRG9fUtM9Dc0qejJK1" type="audio/mpeg">
-    Your browser does not support the audio element.
-</audio>
+        <div class="music-section">
+            <audio id="myBeat">
+                <source src="https://docs.google.com/uc?export=download&id=1yNEAGddJ-3KG5ENRG9fUtM9Dc0qejJK1" type="audio/mpeg">
+            </audio>
+            <button onclick="toggleMusic()" class="btn music-btn" id="pBtn">Play Beat 🎵</button>
+        </div>
+    </div> <script>
+      var song = document.getElementById("myBeat");
+      var pBtn = document.getElementById("pBtn");
+
+      function toggleMusic() {
+        if (song.paused) {
+          song.play().catch(function(error) {
+            console.log("Music play nahi hua: ", error);
+            alert("Bhai, ek baar page par kahin bhi click karke phir Play dabao!");
+          });
+          pBtn.innerHTML = "Pause Beat ⏸️";
+        } else {
+          song.pause();
+          pBtn.innerHTML = "Play Beat 🎵";
+        }
+      }
+    </script>
