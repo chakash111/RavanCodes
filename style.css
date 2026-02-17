@@ -160,3 +160,31 @@ body {
     opacity: 0.3;
     border-radius: 20px;
 }
+body {
+    background: radial-gradient(circle at center, #0b0b0b 0%, #000 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden; /* Screen se bahar kuch na jaye */
+    font-family: 'Arial', sans-serif;
+}
+
+/* Background mein chamakne wale sitare */
+body::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background-image: radial-gradient(#00ffcc 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: moveStars 100s linear infinite;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+@keyframes moveStars {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-50%, -50%); }
+}
