@@ -46,11 +46,11 @@ button:active {
 }
 
 .profile-img img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%; /* Isse photo round hogi */
-    border: 3px solid #00ffcc; /* Neon border */
-    box-shadow: 0 0 20px #00ffcc; /* Neon glow */
-    margin-bottom: 20px;
-    object-fit: cover;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px solid #00ffcc;
+    box-shadow: 0 0 15px #00ffcc;
+    margin-bottom: 10px;
+    object-fit: cover; /* Isse photo kategi nahi, round fit hogi */
 }
