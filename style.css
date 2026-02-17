@@ -6,21 +6,21 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: sans-serif;
 }
 
-/* Card main box - Isme column direction zaroori hai */
+/* Card main box - Sab kuch center karne ke liye */
 .card {
     background: #111;
     padding: 30px;
     border-radius: 20px;
     border: 2px solid #00ffcc;
-    box-shadow: 0 0 25px rgba(0, 255, 204, 0.3);
+    box-shadow: 0 0 25px #00ffcc;
     text-align: center;
-    width: 300px;
+    width: 280px;
     display: flex;
-    flex-direction: column; /* Sab kuch ek ke niche ek aayega */
-    align-items: center;    /* Sab kuch center mein rahega */
+    flex-direction: column; /* Isse sab ek ke niche ek aayega */
+    align-items: center;    /* Isse sab kuch center hoga */
 }
 
 /* Photo Styling */
@@ -39,33 +39,31 @@ h2 {
     color: #00ffcc;
     margin: 10px 0;
     text-shadow: 0 0 10px #00ffcc;
-    font-size: 28px;
 }
 
 p {
     color: #888;
-    margin-bottom: 25px;
     font-size: 14px;
-    letter-spacing: 1px;
+    margin-bottom: 20px;
 }
 
 /* Buttons Container */
 .social-links {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    flex-direction: column; /* Buttons ko ek ke niche ek rakhne ke liye */
+    gap: 12px;
     width: 100%;
 }
 
-/* Neon Buttons Styling */
+/* Neon Buttons */
 .btn {
     text-decoration: none;
     padding: 12px;
     border: 1px solid #00ffcc;
     color: #00ffcc;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: bold;
-    transition: 0.4s;
+    transition: 0.3s;
     background: rgba(0, 255, 204, 0.05);
 }
 
@@ -73,6 +71,4 @@ p {
     background: #00ffcc;
     color: #000;
     box-shadow: 0 0 20px #00ffcc;
-    transform: translateY(-3px);
 }
-
