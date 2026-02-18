@@ -179,3 +179,42 @@ p {
 .about-section b {
     color: #00ffcc; /* Web Development aur Music ko highlight karne ke liye */
 }
+/* --- BPM Detector Styling --- */
+.bpm-container {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05); /* Light transparency */
+    border: 1px solid #00ffcc;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.neon-text {
+    font-size: 1.2rem;
+    color: #00ffcc;
+    text-shadow: 0 0 10px #00ffcc;
+    margin-bottom: 10px;
+}
+
+.upload-btn {
+    display: inline-block;
+    background: #00ffcc;
+    color: #000;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+#bpm-value {
+    font-size: 3rem;
+    color: #ff00ff; /* Pinkish neon for contrast */
+    text-shadow: 0 0 15px #ff00ff;
+    display: block;
+}
+
+.label {
+    color: #bbb;
+    font-size: 0.8rem;
+}
