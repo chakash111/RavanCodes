@@ -1,134 +1,24 @@
-body {
-    background: #000; /* Ekdum kaala background */
-    background-image: 
-        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
-    background-size: 550px 550px, 350px 350px, 250px 250px;
-    background-position: 0 0, 40px 60px, 130px 270px;
-    animation: galaxyMove 60s linear infinite; /* Background dheere-dheere chalega */
-    
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    overflow: hidden;
-}
+/* Layout & Nav */
+.nav { display: flex; gap: 10px; margin-bottom: 25px; }
+.nav-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: #222; color: #666; font-weight: bold; cursor: pointer; }
+.nav-btn.active { background: #00ffcc; color: #000; box-shadow: 0 0 15px #00ffcc; }
 
-@keyframes galaxyMove {
-    from { background-position: 0 0, 40px 60px, 130px 270px; }
-    to { background-position: 550px 550px, 390px 410px, 380px 820px; }
-}
+/* Beat Lab Controls */
+.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: #1a1a1a; padding: 15px; border-radius: 12px; }
+#playBtn { padding: 10px 25px; background: #ff00ff; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
+.bpm-box { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #aaa; }
+#bpm { width: 60px; background: #333; border: 1px solid #444; color: #00ffcc; padding: 5px; border-radius: 5px; text-align: center; }
 
-/* Card ka look aur RGB Animation */
-.card {
-    width: 90%; 
-    max-width: 350px;
-    padding: 25px;
-    background: rgba(10, 10, 10, 0.85);
-    backdrop-filter: blur(15px);
-    border-radius: 25px;
-    position: relative;
-    text-align: center;
-    z-index: 1;
-    /* Neon Border jo color badlega */
-    border: 3px solid #00ffcc; 
-    animation: rgbBorder 5s linear infinite; 
-}
+/* Sequencer Grid */
+.track { display: flex; align-items: center; margin-bottom: 15px; gap: 15px; }
+.label { width: 60px; font-size: 12px; font-weight: bold; color: #00ffcc; text-align: left; }
+.steps { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; flex: 1; }
+.step { height: 35px; background: #2a2a2a; border-radius: 6px; cursor: pointer; border: 1px solid #333; }
+.step.active { background: #00ffcc; box-shadow: 0 0 15px #00ffcc; }
+.step.playing { border: 2px solid #fff; transform: scale(1.1); }
 
-/* RGB Color Changing Logic */
-@keyframes rgbBorder {
-    0% { border-color: #00ffcc; box-shadow: 0 0 15px #00ffcc; }
-    33% { border-color: #ff00ff; box-shadow: 0 0 15px #ff00ff; }
-    66% { border-color: #ffff00; box-shadow: 0 0 15px #ffff00; }
-    100% { border-color: #00ffcc; box-shadow: 0 0 15px #00ffcc; }
-}
-
-/* Card ke title (RAVAN) ko bhi thoda chamkao */
-h2 {
-    font-size: 28px;
-    color: #fff;
-    text-shadow: 0 0 10px #00ffcc;
-    animation: textGlow 3s ease-in-out infinite alternate;
-}
-
-@keyframes textGlow {
-    from { text-shadow: 0 0 10px #00ffcc; }
-    to { text-shadow: 0 0 20px #ff00ff, 0 0 30px #ff00ff; }
-}
-
-
-/* Photo Styling */
-.profile-img img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    border: 3px solid #00ffcc;
-    box-shadow: 0 0 15px #00ffcc;
-    margin-bottom: 15px;
-    object-fit: cover;
-}
-
-/* Text Styling */
-h2 {
-    color: #00ffcc;
-    margin: 10px 0;
-    text-shadow: 0 0 10px #00ffcc;
-}
-
-p {
-    color: #888;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
-
-/* Buttons Container */
-.social-links {
-    display: flex;
-    flex-direction: column; /* Buttons ko ek ke niche ek rakhne ke liye */
-    gap: 12px;
-    width: 100%;
-}
-
-/* Neon Buttons */
-.btn {
-    text-decoration: none;
-    padding: 12px;
-    border: 1px solid #00ffcc;
-    color: #00ffcc;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: 0.3s;
-    background: rgba(0, 255, 204, 0.05);
-}
-
-.btn:hover {
-    background: #00ffcc;
-    color: #000;
-    box-shadow: 0 0 20px #00ffcc;
-}
-.music-section {
-    margin-top: 15px;
-    width: 100%;
-}
-
-..music-section {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 15px;
-}
-
-.music-btn {
-    width: 100%; /* Isse button card ke andar fit ho jayega */
-    max-width: 250px;
-}
-.music-section {
-    width: 100%;
-    margin-top: 15px;
-    display: flex;
-    justify-content: center;
+/* Content Box */
+.content-box { background: rgba(0, 255, 204, 0.05); border: 1px dashed #00ffcc; padding: 15px; border-radius: 15px; text-align: left; }
 }
 
 .music-btn {
