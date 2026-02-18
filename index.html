@@ -8,12 +8,24 @@
 
 <h1>💻 Ravan Code Lab</h1>
 
+<!-- TOOLBAR -->
 <div class="toolbar">
   <button onclick="addCode('<h1>Heading</h1>')">H1</button>
   <button onclick="addCode('<button>Click</button>')">Button</button>
-  <button onclick="addCode('<p>Paragraph</p>')">Text</button>
+  <button onclick="addCode('<p>Text</p>')">Text</button>
   <button onclick="runCode()">▶ Run</button>
-  <button onclick="clearCode()">🗑 Clear</button>
+  <button onclick="clearCode()">🗑</button>
+</div>
+
+<!-- SYMBOL BAR -->
+<div class="symbol-bar">
+  <button onclick="insertSymbol('<')">&lt;</button>
+  <button onclick="insertSymbol('>')">&gt;</button>
+  <button onclick="insertSymbol('/')">/</button>
+  <button onclick="insertSymbol('=')">=</button>
+  <button onclick="insertSymbol('\"')">"</button>
+  <button onclick="insertSymbol('{')">{</button>
+  <button onclick="insertSymbol('}')">}</button>
 </div>
 
 <textarea id="codeArea" placeholder="Yaha code likho..."></textarea>
@@ -25,14 +37,26 @@ let codeArea = document.getElementById("codeArea");
 
 /* AUTO SAVE */
 codeArea.value = localStorage.getItem("savedCode") || "";
-
-codeArea.addEventListener("input", () => {
+codeArea.addEventListener("input", ()=>{
   localStorage.setItem("savedCode", codeArea.value);
 });
 
-/* ADD QUICK CODE */
+/* QUICK CODE */
 function addCode(text){
   codeArea.value += "\n" + text;
+  localStorage.setItem("savedCode", codeArea.value);
+}
+
+/* INSERT SYMBOL AT CURSOR */
+function insertSymbol(sym){
+  let start = codeArea.selectionStart;
+  let end = codeArea.selectionEnd;
+  let text = codeArea.value;
+
+  codeArea.value = text.substring(0,start) + sym + text.substring(end);
+  codeArea.focus();
+  codeArea.selectionStart = codeArea.selectionEnd = start + sym.length;
+
   localStorage.setItem("savedCode", codeArea.value);
 }
 
@@ -50,7 +74,6 @@ function clearCode(){
   localStorage.removeItem("savedCode");
 }
 
-/* AUTO RUN on load */
 runCode();
 </script>
 
