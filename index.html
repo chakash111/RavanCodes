@@ -3,69 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAVAN | Beat Lab & Code</title>
+    <title>RAVAN HUB</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="card">
         <h2>RAVAN HUB</h2>
-        
         <div class="nav">
-            <button class="nav-btn active" onclick="showSection('beat')">🎹 Beat Lab</button>
-            <button class="nav-btn" onclick="showSection('code')">💻 Code & Create</button>
+            <button id="btn-beat" class="nav-btn active" onclick="showSection('beat')">🎹 Beat Lab</button>
+            <button id="btn-code" class="nav-btn" onclick="showSection('code')">💻 Code & Create</button>
         </div>
 
         <div id="beat-section">
             <div class="controls">
                 <button id="playBtn" onclick="togglePlay()">PLAY ▶️</button>
-                <div class="bpm-box">
-                    <label>BPM</label>
-                    <input type="number" id="bpm" value="140" onchange="updateBPM()">
-                </div>
+                <div style="font-size: 12px;">BPM: <input type="number" id="bpm" value="140" style="width:50px; background:#333; color:#00ffcc; border:none; padding:5px;" onchange="updateBPM()"></div>
             </div>
-
             <div class="sequencer">
-                <div class="track">
-                    <span class="label">KICK</span>
-                    <div class="steps" data-sound="kick"></div>
-                </div>
-                <div class="track">
-                    <span class="label">SNARE</span>
-                    <div class="steps" data-sound="snare"></div>
-                </div>
-                <div class="track">
-                    <span class="label">HI-HAT</span>
-                    <div class="steps" data-sound="hihat"></div>
-                </div>
+                <div class="track"><span class="label">KICK</span><div class="steps" data-sound="kick"></div></div>
+                <div class="track"><span class="label">SNARE</span><div class="steps" data-sound="snare"></div></div>
+                <div class="track"><span class="label">HIHAT</span><div class="steps" data-sound="hihat"></div></div>
             </div>
         </div>
 
         <div id="code-section" style="display:none;">
-            <div class="content-box">
-                <h3>My Journey</h3>
-                <p>SoloLearn par HTML/CSS seekh raha hoon. Ravan project par kaam chalu hai!</p>
-            </div>
+            <h3>Code & Create</h3>
+            <p>SoloLearn par HTML/CSS seekh raha hoon. Ravan project par kaam chalu hai!</p>
         </div>
     </div>
 
     <script>
-        // --- BEAT LAB JAVASCRIPT LOGIC ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let isPlaying = false;
-        let currentStep = 0;
-        let nextStepTime = 0;
-        let tempo = 140;
+        let isPlaying = false, currentStep = 0, nextStepTime = 0, tempo = 140;
 
-        // Grid Generation
         document.querySelectorAll('.steps').forEach(container => {
             for (let i = 0; i < 8; i++) {
                 const step = document.createElement('div');
                 step.classList.add('step');
-                step.onclick = () => {
-                    if (audioCtx.state === 'suspended') audioCtx.resume();
-                    step.classList.toggle('active');
-                };
+                step.onclick = () => { if (audioCtx.state === 'suspended') audioCtx.resume(); step.classList.toggle('active'); };
                 container.appendChild(step);
             }
         });
@@ -74,30 +49,22 @@
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-
             if (type === 'kick') {
                 osc.frequency.setValueAtTime(150, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
                 gain.gain.setValueAtTime(1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
             } else if (type === 'snare') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(100, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                osc.type = 'triangle'; gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
             } else {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(10000, audioCtx.currentTime);
+                osc.type = 'square'; osc.frequency.setValueAtTime(10000, audioCtx.currentTime);
                 gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
             }
-            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
         }
 
         function scheduler() {
             while (nextStepTime < audioCtx.currentTime + 0.1) {
-                playStep();
-                nextNote();
+                playStep(); nextNote();
             }
             if (isPlaying) requestAnimationFrame(scheduler);
         }
@@ -106,17 +73,13 @@
             document.querySelectorAll('.track').forEach(track => {
                 const allSteps = track.querySelectorAll('.step');
                 const step = allSteps[currentStep];
-                const soundType = track.querySelector('.steps').dataset.sound;
                 document.querySelectorAll('.step').forEach(s => s.classList.remove('playing'));
                 step.classList.add('playing');
-                if (step.classList.contains('active')) playSound(soundType);
+                if (step.classList.contains('active')) playSound(track.querySelector('.steps').dataset.sound);
             });
         }
 
-        function nextNote() {
-            nextStepTime += (60.0 / tempo / 2);
-            currentStep = (currentStep + 1) % 8;
-        }
+        function nextNote() { nextStepTime += (60.0 / tempo / 2); currentStep = (currentStep + 1) % 8; }
 
         function togglePlay() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -130,30 +93,9 @@
         function showSection(section) {
             document.getElementById('beat-section').style.display = section === 'beat' ? 'block' : 'none';
             document.getElementById('code-section').style.display = section === 'code' ? 'block' : 'none';
-            const btns = document.querySelectorAll('.nav-btn');
-            btns[0].classList.toggle('active', section === 'beat');
-            btns[1].classList.toggle('active', section === 'code');
+            document.getElementById('btn-beat').classList.toggle('active', section === 'beat');
+            document.getElementById('btn-code').classList.toggle('active', section === 'code');
         }
     </script>
-</body>
-</html>
-    document.getElementById('audio-file').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-        const bpmDisplay = document.getElementById('bpm-value');
-        bpmDisplay.innerText = 'Wait...';
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const tempCtx = new (window.AudioContext || window.webkitAudioContext)();
-            tempCtx.decodeAudioData(event.target.result, function(buffer) {
-                // Yahan 140 default placeholder for testing
-                bpmDisplay.innerText = '140'; 
-            });
-        };
-        reader.readAsArrayBuffer(file);
-    });
-</script>
-
-        
 </body>
 </html>
