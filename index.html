@@ -32,7 +32,22 @@
             <p>👋 Main abhi <b>Web Development</b> aur <b>Music</b> seekh raha hoon. Ye meri pehli website hai jo maine mobile par banayi hai!</p>
         </div>
     </div>
+   <div class="bpm-container">
+     <h2 class="neon-text">⚡ BPM Real-Time Detector</h2>
+     <p>Apna track upload karo aur magic dekho!</p>
+    
+    <div class="upload-area" id="drop-zone">
+        <input type="file" id="audio-file" accept="audio/*" hidden>
+        <label for="audio-file" class="upload-btn">📁 Choose Audio File</label>
+    </div>
 
+    <div id="loader" class="loader" style="display: none;">Analyzing Beats... 🥁</div>
+    
+    <div class="result-box">
+        <span id="bpm-value">--</span>
+        <span class="label">BPM</span>
+    </div>
+   </div>
     <script>
       var song = document.getElementById("myBeat");
       var pBtn = document.getElementById("pBtn");
@@ -62,6 +77,6 @@
           card.classList.remove("playing"); // Animation band
         }
       }
-    </script>
+      </script>
 </body>
 </html>
