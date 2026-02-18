@@ -1,118 +1,41 @@
-/* Layout & Nav */
-.nav { display: flex; gap: 10px; margin-bottom: 25px; }
-.nav-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; background: #222; color: #666; font-weight: bold; cursor: pointer; }
-.nav-btn.active { background: #00ffcc; color: #000; box-shadow: 0 0 15px #00ffcc; }
-
-/* Beat Lab Controls */
-.controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; background: #1a1a1a; padding: 15px; border-radius: 12px; }
-#playBtn { padding: 10px 25px; background: #ff00ff; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; }
-.bpm-box { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #aaa; }
-#bpm { width: 60px; background: #333; border: 1px solid #444; color: #00ffcc; padding: 5px; border-radius: 5px; text-align: center; }
-
-/* Sequencer Grid */
-.track { display: flex; align-items: center; margin-bottom: 15px; gap: 15px; }
-.label { width: 60px; font-size: 12px; font-weight: bold; color: #00ffcc; text-align: left; }
-.steps { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; flex: 1; }
-.step { height: 35px; background: #2a2a2a; border-radius: 6px; cursor: pointer; border: 1px solid #333; }
-.step.active { background: #00ffcc; box-shadow: 0 0 15px #00ffcc; }
-.step.playing { border: 2px solid #fff; transform: scale(1.1); }
-
-/* Content Box */
-.content-box { background: rgba(0, 255, 204, 0.05); border: 1px dashed #00ffcc; padding: 15px; border-radius: 15px; text-align: left; }
+/* style.css */
+body {
+    background: #000;
+    color: #fff;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: sans-serif;
+    overflow-x: hidden;
 }
 
-.music-btn {
-    width: 100%;
-    border-color: #ff00ff !important;
-    color: #ff00ff !important;
-    background: rgba(255, 0, 255, 0.05) !important;
-    box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
-}
-
-.music-btn:hover {
-    background: #ff00ff !important;
-    color: #000 !important;
-    box-shadow: 0 0 20px #ff00ff !important;
-}
-/* Card Pulse Animation jab music baje */
-@keyframes beat {
-    0% { transform: scale(1); box-shadow: 0 0 20px #00ffcc; }
-    50% { transform: scale(1.02); box-shadow: 0 0 40px #00ffcc; }
-    100% { transform: scale(1); box-shadow: 0 0 20px #00ffcc; }
-}
-
-.playing {
-    animation: beat 0.5s infinite; /* Music ki beat jaisa dhak-dhak */
-    border-color: #ff00ff !important; /* Playing ke waqt color change */
-}
-
-/* About Me styling */
-.about-section {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #333;
-    font-size: 13px;
-    color: #bbb;
-    line-height: 1.5;
-}
-/* About Section ko center aur saaf dikhane ke liye */
-.about-section {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #333;
-    font-size: 14px;
-    color: #bbb;
-    line-height: 1.6;
+.card {
+    background: #111;
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 20px;
+    border: 2px solid #00ffcc;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
     text-align: center;
 }
 
-.about-section b {
-    color: #00ffcc; /* Web Development aur Music ko highlight karne ke liye */
-}
-/* --- BPM Detector Styling --- */
-.bpm-container {
-    margin: 20px auto; /* Isse detector hamesha center mein rahega */
-    max-width: 90%;    /* Badi screen par card ke bahar nahi jayega */
-    background: rgba(0, 0, 0, 0.6); /* Thoda dark background taaki text saaf dikhe */
-    border: 1px solid #00ffcc;
-    box-shadow: 0 0 15px rgba(0, 255, 204, 0.3);
-    padding: 20px;
-    border-radius: 15px;
-}
+h2 { color: #00ffcc; margin-top: 0; }
 
-.neon-text {
-    font-size: 1.2rem;
-    color: #00ffcc;
-    text-shadow: 0 0 10px #00ffcc;
-    margin-bottom: 10px;
-}
+.nav { display: flex; gap: 10px; margin-bottom: 20px; }
+.nav-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; background: #222; color: #888; cursor: pointer; }
+.nav-btn.active { background: #00ffcc; color: #000; font-weight: bold; }
 
-.upload-btn {
-    display: inline-block;
-    background: #00ffcc;
-    color: #000;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 10px 0;
-}
+.controls { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+#playBtn { padding: 10px 20px; background: #ff00ff; border: none; border-radius: 5px; color: #fff; font-weight: bold; }
 
-#bpm-value {
-    font-size: 3rem;
-    color: #ff00ff; /* Pinkish neon for contrast */
-    text-shadow: 0 0 15px #ff00ff;
-    display: block;
-}
+.track { display: flex; align-items: center; margin-bottom: 12px; gap: 10px; }
+.label { width: 50px; font-size: 10px; color: #00ffcc; font-weight: bold; text-align: left; }
+.steps { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; flex: 1; }
+.step { height: 30px; background: #333; border-radius: 4px; border: 1px solid #444; }
+.step.active { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; border: none; }
+.step.playing { border: 2px solid #fff; }
 
-.label {
-    color: #bbb;
-    font-size: 0.8rem;
-}
-#visualizer {
-    width: 100%;
-    height: 100px; /* Choti height rakhenge taaki card zyada lamba na ho */
-    background: transparent;
-    margin-top: 10px;
-    border-bottom: 1px solid rgba(0, 255, 204, 0.2);
-}
+#code-section { background: rgba(0, 255, 204, 0.05); padding: 15px; border-radius: 10px; border: 1px dashed #00ffcc; text-align: left; }
