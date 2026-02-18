@@ -3,130 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAVAN | Portfolio</title>
+    <title>RAVAN PRO HUB | Code Anywhere</title>
     <style>
-        /* Base Styling */
-        body {
-            background: #000;
-            color: #fff;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
+        :root { --neon: #00ffcc; --dark: #0a0a0a; --gray: #1a1a1a; }
+        body { background: var(--dark); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 10px; }
+        .container { max-width: 600px; margin: auto; }
+        h1 { color: var(--neon); text-align: center; text-transform: uppercase; letter-spacing: 3px; }
 
-        /* Animated Particles Background */
-        body::before {
-            content: "";
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, #00ffcc 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.15;
-            animation: moveBg 120s linear infinite;
-            z-index: -1;
-        }
+        /* Quick Reference Sheet */
+        .cheat-sheet { background: var(--gray); padding: 10px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; overflow-x: auto; }
+        .cheat-sheet h3 { margin: 0 0 10px 0; font-size: 14px; color: var(--neon); }
+        code { background: #000; color: #ff00ff; padding: 2px 5px; border-radius: 3px; font-size: 12px; margin-right: 5px; }
 
-        @keyframes moveBg {
-            from { transform: translate(0, 0); }
-            to { transform: translate(-50%, -50%); }
-        }
-
-        /* The Card Design */
-        .card {
-            background: rgba(10, 10, 10, 0.9);
-            width: 85%;
-            max-width: 360px;
-            padding: 40px 20px;
-            border-radius: 30px;
-            border: 2px solid #00ffcc;
-            box-shadow: 0 0 40px rgba(0, 255, 204, 0.2);
-            text-align: center;
-            backdrop-filter: blur(15px);
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            box-shadow: 0 0 60px rgba(0, 255, 204, 0.4);
-            transform: translateY(-5px);
-        }
-
-        .profile-img {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            border: 4px solid #00ffcc;
-            margin-bottom: 20px;
-            object-fit: cover;
-            box-shadow: 0 0 20px #00ffcc;
-        }
-
-        h1 { 
-            color: #00ffcc; 
-            margin: 10px 0; 
-            letter-spacing: 5px; 
-            text-transform: uppercase;
-            font-size: 28px;
-        }
-
-        p { color: #888; font-size: 15px; margin-bottom: 30px; }
-
-        /* Social/Project Links */
-        .links { display: flex; flex-direction: column; gap: 15px; }
+        /* Editor Section */
+        .editor-area { background: var(--gray); padding: 15px; border-radius: 15px; border: 2px solid var(--neon); }
+        textarea { width: 100%; height: 180px; background: #000; color: var(--neon); border: 1px solid #444; border-radius: 8px; padding: 10px; font-family: monospace; resize: none; box-sizing: border-box; }
         
-        .link-btn {
-            background: #111;
-            color: #fff;
-            padding: 15px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 16px;
-            transition: 0.4s;
-            border: 1px solid #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
+        .btn-group { display: flex; gap: 10px; margin-top: 10px; }
+        .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .run-btn { background: var(--neon); color: #000; }
+        .copy-btn { background: #333; color: #fff; }
 
-        .link-btn:hover {
-            background: #00ffcc;
-            color: #000;
-            border-color: #00ffcc;
-            transform: scale(1.05);
-        }
+        /* Output Window */
+        #output { width: 100%; height: 200px; background: #fff; border-radius: 8px; margin-top: 15px; border: none; }
+
+        /* Helper Tools */
+        .tools { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .tool-box { background: var(--gray); padding: 10px; border-radius: 8px; font-size: 12px; text-align: center; border: 1px solid #333; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <img src="https://i.ibb.co/HThZcKrd/file-00000000ae507208831d1518a15bc4e6.png" class="profile-img">
-        <h1>RAVAN</h1>
-        <p>HTML & CSS Developer</p>
+<div class="container">
+    <h1>RAVAN HUB 💻</h1>
 
-        <div class="links">
-            <a href="#" class="link-btn">📁 My Projects</a>
-            <a href="#" class="link-btn">📱 SoloLearn Profile</a>
-            <a href="#" class="link-btn">📸 Instagram / Social</a>
-        </div>
+    <div class="cheat-sheet">
+        <h3>📚 Quick Help:</h3>
+        <code>&lt;a href=""&gt;Link&lt;/a&gt;</code>
+        <code>&lt;img src=""&gt;</code>
+        <code>&lt;div&gt;</code>
+        <code>&lt;button&gt;</code>
+        <code>&lt;style&gt;</code>
     </div>
 
-</body>
-</html>
-                songSource.start(0);
-                
-                // Start Sequencer
-                currentStep = 0; nextStepTime = audioCtx.currentTime; scheduler();
-            } else {
-                if (songSource) songSource.stop();
-            }
-            document.getElementById('playBtn').innerText = isPlaying ? "STOP ⏹️" : "PLAY ▶️";
-        }
-    </script>
+    <div class="editor-area">
+        <textarea id="codeInput" placeholder="Apna HTML/CSS code yahan likho..."></textarea>
+        <div class="btn-group">
+            <button class="btn run-btn" onclick="runCode()">RUN CODE ▶️</button>
+            <button class="btn copy-btn" onclick="clearCode()">CLEAR 🗑️</button>
+        </div>
+        <iframe id="output"></iframe>
+    </div>
+
+    <div class="tools">
+        <div class="tool-box">
+            <strong>Color Picker:</strong><br>
+            <input type="color" id="colorPicker" onchange="console.log(this.value)" style="width:100%; margin-top:5px;">
+        </div>
+        <div class="tool-box">
+            <strong>Learning:</strong><br>
+            SoloLearn HTML/CSS
+        </div>
+    </div>
+</div>
+
+<script>
+    function runCode() {
+        const code = document.getElementById('codeInput').value;
+        const output = document.getElementById('output').contentWindow.document;
+        output.open();
+        output.write(code);
+        output.close();
+    }
+
+    function clearCode() {
+        document.getElementById('codeInput').value = "";
+    }
+
+    // Starting Sample Code
+    document.getElementById('codeInput').value = "\n<style>\n  body { text-align: center; background: yellow; }\n  h1 { color: red; }\n</style>\n<h1>Ravan Is Pro!</h1>\n<p>Main SoloLearn se seekh raha hoon.</p>";
+</script>
+
 </body>
 </html>
