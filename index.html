@@ -15,8 +15,10 @@ body{
 
 h1,h3{
   text-align:center;
+  margin:8px 0;
 }
 
+/* TOOLBAR */
 .toolbar{
   text-align:center;
   margin-bottom:10px;
@@ -32,6 +34,27 @@ h1,h3{
   font-weight:bold;
 }
 
+/* SYMBOL BAR */
+.symbol-bar{
+  display:flex;
+  overflow-x:auto;
+  gap:6px;
+  padding:6px;
+  margin-bottom:10px;
+  background:#111;
+  border-radius:8px;
+}
+
+.symbol-bar button{
+  flex:0 0 auto;
+  padding:6px 10px;
+  background:#333;
+  color:white;
+  border:none;
+  border-radius:6px;
+}
+
+/* CSS SHORTCUTS */
 .css-tools{
   display:flex;
   flex-wrap:wrap;
@@ -48,100 +71,7 @@ h1,h3{
   border-radius:6px;
 }
 
-textarea{
-  width:100%;
-  height:150px;
-  background:#1a1a1a;
-  color:#00ff88;
-  border:1px solid #333;
-  border-radius:10px;
-  padding:10px;
-  font-size:15px;
-  margin-bottom:10px;
-  box-sizing:border-box;
-  font-family:monospace;
-}
-
-iframe{
-  width:100%;
-  height:260px;
-  background:white;
-  border:none;
-  border-radius:10px;
-}
-</style>
-</head>
-
-<body>
-
-<h1>💻 Ravan Code Lab PRO</h1>
-
-<div class="toolbar">
-  <button onclick="runCode()">▶ Run</button>
-  <button onclick="clearAll()">🗑 Clear</button>
-</div>
-
-<h3>HTML</h3>
-<textarea id="htmlCode" placeholder="Write HTML here..."></textarea>
-
-<h3>CSS Shortcuts</h3>
-<div class="css-tools">
-  <button onclick="addCSS('color:red;')">Text Red</button>
-  <button onclick="addCSS('color:blue;')">Text Blue</button>
-  <button onclick="addCSS('background:black;')">BG Black</button>
-  <button onclick="addCSS('background:yellow;')">BG Yellow</button>
-  <button onclick="addCSS('text-align:center;')">Center</button>
-  <button onclick="addCSS('font-size:30px;')">Big Text</button>
-  <button onclick="addCSS('border:2px solid red;')">Border</button>
-  <button onclick="addCSS('border-radius:10px;')">Round</button>
-  <button onclick="addCSS('padding:10px;')">Padding</button>
-  <button onclick="addCSS('margin:10px;')">Margin</button>
-  <button onclick="addCSS('box-shadow:0 0 10px black;')">Shadow</button>
-</div>
-
-<h3>CSS</h3>
-<textarea id="cssCode" placeholder="Write CSS here..."></textarea>
-
-<iframe id="preview"></iframe>
-
-<script>
-
-let htmlBox = document.getElementById("htmlCode");
-let cssBox = document.getElementById("cssCode");
-
-/* AUTO SAVE */
-htmlBox.value = localStorage.getItem("htmlData") || "";
-cssBox.value = localStorage.getItem("cssData") || "";
-
-htmlBox.addEventListener("input", ()=>{
-  localStorage.setItem("htmlData", htmlBox.value);
-});
-
-cssBox.addEventListener("input", ()=>{
-  localStorage.setItem("cssData", cssBox.value);
-});
-
-/* RUN */
-function runCode(){
-  let finalCode =
-  "<style>" + cssBox.value + "</style>" + htmlBox.value;
-  document.getElementById("preview").srcdoc = finalCode;
-}
-
-/* CLEAR */
-function clearAll(){
-  htmlBox.value = "";
-  cssBox.value = "";
-  localStorage.clear();
-}
-
-/* CSS SHORTCUT */
-function addCSS(text){
-  cssBox.value += "\n" + text;
-  localStorage.setItem("cssData", cssBox.value);
-}
-
-/* AUTO RUN ON LOAD */
+textarea{/* AUTO RUN ON LOAD */
 runCode();
 
 </script>
