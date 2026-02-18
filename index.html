@@ -3,144 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAVAN PRO STUDIO | v2.0</title>
-    <link rel="stylesheet" href="style.css">
+    <title>RAVAN | Portfolio</title>
+    <style>
+        /* Base Styling */
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Animated Particles Background */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, #00ffcc 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.15;
+            animation: moveBg 120s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes moveBg {
+            from { transform: translate(0, 0); }
+            to { transform: translate(-50%, -50%); }
+        }
+
+        /* The Card Design */
+        .card {
+            background: rgba(10, 10, 10, 0.9);
+            width: 85%;
+            max-width: 360px;
+            padding: 40px 20px;
+            border-radius: 30px;
+            border: 2px solid #00ffcc;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.2);
+            text-align: center;
+            backdrop-filter: blur(15px);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 60px rgba(0, 255, 204, 0.4);
+            transform: translateY(-5px);
+        }
+
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 4px solid #00ffcc;
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: 0 0 20px #00ffcc;
+        }
+
+        h1 { 
+            color: #00ffcc; 
+            margin: 10px 0; 
+            letter-spacing: 5px; 
+            text-transform: uppercase;
+            font-size: 28px;
+        }
+
+        p { color: #888; font-size: 15px; margin-bottom: 30px; }
+
+        /* Social/Project Links */
+        .links { display: flex; flex-direction: column; gap: 15px; }
+        
+        .link-btn {
+            background: #111;
+            color: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: 0.4s;
+            border: 1px solid #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .link-btn:hover {
+            background: #00ffcc;
+            color: #000;
+            border-color: #00ffcc;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
-    <div class="studio-container" id="mainStudio">
-        <header>
-            <h2>RAVAN PRO STUDIO 🎹</h2>
-            <div class="file-input">
-                <label for="songUpload">📁 Load Song</label>
-                <input type="file" id="songUpload" accept="audio/*">
-            </div>
-        </header>
 
-        <div class="main-display">
-            <div id="bpmDisplay">BPM: --</div>
-            <div id="status">Ready...</div>
-        </div>
+    <div class="card">
+        <img src="https://i.ibb.co/HThZcKrd/file-00000000ae507208831d1518a15bc4e6.png" class="profile-img">
+        <h1>RAVAN</h1>
+        <p>HTML & CSS Developer</p>
 
-        <div class="controls">
-            <button id="playBtn" onclick="togglePlay()">PLAY ▶️</button>
-            <button onclick="toggleMastering()" id="masterBtn">MASTERING: OFF</button>
-        </div>
-
-        <div class="sequencer">
-            <div class="track"><span class="label">808 KICK</span><div class="steps" data-sound="kick"></div></div>
-            <div class="track"><span class="label">SNARE</span><div class="steps" data-sound="snare"></div></div>
-            <div class="track"><span class="label">HI-HAT</span><div class="steps" data-sound="hihat"></div></div>
+        <div class="links">
+            <a href="#" class="link-btn">📁 My Projects</a>
+            <a href="#" class="link-btn">📱 SoloLearn Profile</a>
+            <a href="#" class="link-btn">📸 Instagram / Social</a>
         </div>
     </div>
 
-    <script>
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let songBuffer, songSource, isPlaying = false, isMastered = false;
-        let currentStep = 0, nextStepTime = 0, tempo = 120;
-
-        // Mastering Nodes
-        const masterGain = audioCtx.createGain();
-        const compressor = audioCtx.createDynamicsCompressor();
-        const bassBoost = audioCtx.createBiquadFilter();
-        
-        // Connect Mastering Chain
-        bassBoost.type = "lowshelf";
-        bassBoost.frequency.value = 200;
-        bassBoost.gain.value = 0; // Default off
-        
-        compressor.threshold.setValueAtTime(-24, audioCtx.currentTime);
-        compressor.knee.setValueAtTime(40, audioCtx.currentTime);
-        compressor.ratio.setValueAtTime(12, audioCtx.currentTime);
-        
-        masterGain.connect(audioCtx.destination);
-
-        // Grid Generation (16 steps)
-        document.querySelectorAll('.steps').forEach(container => {
-            for (let i = 0; i < 16; i++) {
-                const step = document.createElement('div');
-                step.classList.add('step');
-                step.onclick = () => step.classList.toggle('active');
-                container.appendChild(step);
-            }
-        });
-
-        // Song Upload & Auto BPM
-        document.getElementById('songUpload').onchange = async (e) => {
-            const file = e.target.files[0];
-            document.getElementById('status').innerText = "Analyzing...";
-            const arrayBuffer = await file.arrayBuffer();
-            songBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-            
-            // Simple BPM Guessing Logic
-            // Real detection needs complex math, but we set a baseline
-            tempo = 140; 
-            document.getElementById('bpmDisplay').innerText = "BPM: " + tempo;
-            document.getElementById('status').innerText = "Loaded: " + file.name;
-        };
-
-        function playSound(type) {
-            const osc = audioCtx.createOscillator();
-            const g = audioCtx.createGain();
-            osc.connect(g);
-            g.connect(isMastered ? compressor : masterGain);
-
-            if (type === 'kick') {
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                g.gain.setValueAtTime(1.5, audioCtx.currentTime);
-                document.getElementById('mainStudio').classList.add('kick-pulse');
-                setTimeout(() => document.getElementById('mainStudio').classList.remove('kick-pulse'), 100);
-            } else if (type === 'snare') {
-                osc.type = 'triangle'; g.gain.setValueAtTime(0.3, audioCtx.currentTime);
-            } else {
-                osc.type = 'square'; osc.frequency.value = 10000; g.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            }
-            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
-        }
-
-        function toggleMastering() {
-            isMastered = !isMastered;
-            const btn = document.getElementById('masterBtn');
-            btn.innerText = isMastered ? "MASTERING: ON" : "MASTERING: OFF";
-            btn.style.background = isMastered ? "#00ffcc" : "#222";
-            btn.style.color = isMastered ? "#000" : "#fff";
-            bassBoost.gain.value = isMastered ? 15 : 0;
-        }
-
-        function scheduler() {
-            while (nextStepTime < audioCtx.currentTime + 0.1) {
-                playStep();
-                nextNote();
-            }
-            if (isPlaying) requestAnimationFrame(scheduler);
-        }
-
-        function playStep() {
-            document.querySelectorAll('.track').forEach(track => {
-                const step = track.querySelectorAll('.step')[currentStep];
-                document.querySelectorAll('.step').forEach(s => s.classList.remove('playing'));
-                step.classList.add('playing');
-                if (step.classList.contains('active')) playSound(track.querySelector('.steps').dataset.sound);
-            });
-        }
-
-        function nextNote() {
-            nextStepTime += (60.0 / tempo / 4);
-            currentStep = (currentStep + 1) % 16;
-        }
-
-        function togglePlay() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            isPlaying = !isPlaying;
-            if (isPlaying) {
-                // Play Song
-                songSource = audioCtx.createBufferSource();
-                songSource.buffer = songBuffer;
-                songSource.connect(isMastered ? bassBoost : masterGain);
-                if (isMastered) {
-                    bassBoost.connect(compressor);
-                    compressor.connect(masterGain);
-                }
+</body>
+</html>
                 songSource.start(0);
                 
                 // Start Sequencer
