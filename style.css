@@ -112,16 +112,13 @@ h2 {
 }
 .step.active { 
     background: #00ffcc; 
-    box-shadow: 0 0 12px #00ffcc; 
+    box-shadow: 0 0 20px #00ffcc, 0 0 40px rgba(0, 255, 204, 0.4); 
     border: none; 
 }
-.step.playing { border: 2px solid #fff; transform: scale(1.05); }
 
-#code-section { 
-    background: rgba(0, 255, 204, 0.05); 
-    padding: 20px; 
-    border-radius: 15px; 
-    border: 1px dashed #00ffcc; 
-    text-align: left;
-    line-height: 1.6;
+.step.playing { 
+    border: 2px solid #fff; 
+    transform: scale(1.15); 
+    z-index: 2;
 }
+
