@@ -3,120 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAVAN HUB | Pro Beat Lab</title>
+    <title>RAVAN PRO STUDIO | v2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="card" id="mainCard">
-        <h2>RAVAN HUB</h2>
-        <div class="nav">
-            <button id="btn-beat" class="nav-btn active" onclick="showSection('beat')">🎹 Beat Lab</button>
-            <button id="btn-code" class="nav-btn" onclick="showSection('code')">💻 Code & Create</button>
+    <div class="studio-container" id="mainStudio">
+        <header>
+            <h2>RAVAN PRO STUDIO 🎹</h2>
+            <div class="file-input">
+                <label for="songUpload">📁 Load Song</label>
+                <input type="file" id="songUpload" accept="audio/*">
+            </div>
+        </header>
+
+        <div class="main-display">
+            <div id="bpmDisplay">BPM: --</div>
+            <div id="status">Ready...</div>
         </div>
 
-        <div id="beat-section">
-            <div class="controls">
-                <button id="playBtn" onclick="togglePlay()">PLAY ▶️</button>
-                <div class="bpm-box">
-                    BPM <input type="number" id="bpm" value="140" onchange="updateBPM()">
-                </div>
-            </div>
-            
-            <div class="sequencer">
-                <div class="track"><span class="label">KICK</span><div class="steps" data-sound="kick"></div></div>
-                <div class="track"><span class="label">SNARE</span><div class="steps" data-sound="snare"></div></div>
-                <div class="track"><span class="label">HIHAT</span><div class="steps" data-sound="hihat"></div></div>
-            </div>
+        <div class="controls">
+            <button id="playBtn" onclick="togglePlay()">PLAY ▶️</button>
+            <button onclick="toggleMastering()" id="masterBtn">MASTERING: OFF</button>
         </div>
 
-        <div id="code-section" style="display:none;">
-            <h3>Code & Create</h3>
-            <p>SoloLearn par <b>HTML/CSS</b> seekh raha hoon. 'Ravan' project ab ek pro hub ban chuka hai!</p>
+        <div class="sequencer">
+            <div class="track"><span class="label">808 KICK</span><div class="steps" data-sound="kick"></div></div>
+            <div class="track"><span class="label">SNARE</span><div class="steps" data-sound="snare"></div></div>
+            <div class="track"><span class="label">HI-HAT</span><div class="steps" data-sound="hihat"></div></div>
         </div>
     </div>
 
     <script>
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        let isPlaying = false, currentStep = 0, nextStepTime = 0, tempo = 140;
+        let songBuffer, songSource, isPlaying = false, isMastered = false;
+        let currentStep = 0, nextStepTime = 0, tempo = 120;
 
-        // 16 Steps Generate karna (FL Studio standard)
+        // Mastering Nodes
+        const masterGain = audioCtx.createGain();
+        const compressor = audioCtx.createDynamicsCompressor();
+        const bassBoost = audioCtx.createBiquadFilter();
+        
+        // Connect Mastering Chain
+        bassBoost.type = "lowshelf";
+        bassBoost.frequency.value = 200;
+        bassBoost.gain.value = 0; // Default off
+        
+        compressor.threshold.setValueAtTime(-24, audioCtx.currentTime);
+        compressor.knee.setValueAtTime(40, audioCtx.currentTime);
+        compressor.ratio.setValueAtTime(12, audioCtx.currentTime);
+        
+        masterGain.connect(audioCtx.destination);
+
+        // Grid Generation (16 steps)
         document.querySelectorAll('.steps').forEach(container => {
             for (let i = 0; i < 16; i++) {
                 const step = document.createElement('div');
                 step.classList.add('step');
-                step.onclick = () => { 
-                    if (audioCtx.state === 'suspended') audioCtx.resume(); 
-                    step.classList.toggle('active'); 
-                };
+                step.onclick = () => step.classList.toggle('active');
                 container.appendChild(step);
             }
         });
 
+        // Song Upload & Auto BPM
+        document.getElementById('songUpload').onchange = async (e) => {
+            const file = e.target.files[0];
+            document.getElementById('status').innerText = "Analyzing...";
+            const arrayBuffer = await file.arrayBuffer();
+            songBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+            
+            // Simple BPM Guessing Logic
+            // Real detection needs complex math, but we set a baseline
+            tempo = 140; 
+            document.getElementById('bpmDisplay').innerText = "BPM: " + tempo;
+            document.getElementById('status').innerText = "Loaded: " + file.name;
+        };
+
         function playSound(type) {
             const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            const filter = audioCtx.createBiquadFilter();
+            const g = audioCtx.createGain();
+            osc.connect(g);
+            g.connect(isMastered ? compressor : masterGain);
 
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(audioCtx.destination);
-            
             if (type === 'kick') {
-                filter.type = "lowpass";
                 osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                gain.gain.setValueAtTime(1.2, audioCtx.currentTime);
-                // Pulse effect on card for Kick
-                document.getElementById('mainCard').classList.add('pulse');
-                setTimeout(() => document.getElementById('mainCard').classList.remove('pulse'), 100);
+                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                g.gain.setValueAtTime(1.5, audioCtx.currentTime);
+                document.getElementById('mainStudio').classList.add('kick-pulse');
+                setTimeout(() => document.getElementById('mainStudio').classList.remove('kick-pulse'), 100);
             } else if (type === 'snare') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                osc.type = 'triangle'; g.gain.setValueAtTime(0.3, audioCtx.currentTime);
             } else {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(12000, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                osc.type = 'square'; osc.frequency.value = 10000; g.gain.setValueAtTime(0.05, audioCtx.currentTime);
             }
             osc.start(); osc.stop(audioCtx.currentTime + 0.3);
         }
 
+        function toggleMastering() {
+            isMastered = !isMastered;
+            const btn = document.getElementById('masterBtn');
+            btn.innerText = isMastered ? "MASTERING: ON" : "MASTERING: OFF";
+            btn.style.background = isMastered ? "#00ffcc" : "#222";
+            btn.style.color = isMastered ? "#000" : "#fff";
+            bassBoost.gain.value = isMastered ? 15 : 0;
+        }
+
         function scheduler() {
             while (nextStepTime < audioCtx.currentTime + 0.1) {
-                playStep(); nextNote();
+                playStep();
+                nextNote();
             }
             if (isPlaying) requestAnimationFrame(scheduler);
         }
 
         function playStep() {
             document.querySelectorAll('.track').forEach(track => {
-                const allSteps = track.querySelectorAll('.step');
-                const step = allSteps[currentStep];
+                const step = track.querySelectorAll('.step')[currentStep];
                 document.querySelectorAll('.step').forEach(s => s.classList.remove('playing'));
                 step.classList.add('playing');
                 if (step.classList.contains('active')) playSound(track.querySelector('.steps').dataset.sound);
             });
         }
 
-        function nextNote() { 
-            nextStepTime += (60.0 / tempo / 4); // 16th notes
-            currentStep = (currentStep + 1) % 16; 
+        function nextNote() {
+            nextStepTime += (60.0 / tempo / 4);
+            currentStep = (currentStep + 1) % 16;
         }
 
         function togglePlay() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             isPlaying = !isPlaying;
+            if (isPlaying) {
+                // Play Song
+                songSource = audioCtx.createBufferSource();
+                songSource.buffer = songBuffer;
+                songSource.connect(isMastered ? bassBoost : masterGain);
+                if (isMastered) {
+                    bassBoost.connect(compressor);
+                    compressor.connect(masterGain);
+                }
+                songSource.start(0);
+                
+                // Start Sequencer
+                currentStep = 0; nextStepTime = audioCtx.currentTime; scheduler();
+            } else {
+                if (songSource) songSource.stop();
+            }
             document.getElementById('playBtn').innerText = isPlaying ? "STOP ⏹️" : "PLAY ▶️";
-            if (isPlaying) { currentStep = 0; nextStepTime = audioCtx.currentTime; scheduler(); }
-        }
-
-        function updateBPM() { tempo = document.getElementById('bpm').value; }
-
-        function showSection(section) {
-            document.getElementById('beat-section').style.display = section === 'beat' ? 'block' : 'none';
-            document.getElementById('code-section').style.display = section === 'code' ? 'block' : 'none';
-            document.getElementById('btn-beat').classList.toggle('active', section === 'beat');
-            document.getElementById('btn-code').classList.toggle('active', section === 'code');
         }
     </script>
 </body>
