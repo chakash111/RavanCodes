@@ -3,108 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ravan Codes</title>
+    <title>RAVAN | Beat Lab & Code</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="card">
-        <div class="profile-img">
-            <img src="https://i.ibb.co/HThZcKrd/file-00000000ae507208831d1518a15bc4e6.png" alt="Ravan">
+        <h2>RAVAN HUB</h2>
+        
+        <div class="nav">
+            <button class="nav-btn active" onclick="showSection('beat')">🎹 Beat Lab</button>
+            <button class="nav-btn" onclick="showSection('code')">💻 Code & Create</button>
         </div>
 
-        <h2>RAVAN</h2>
-        <p>Web Developer | Beat Maker</p>
+        <div id="beat-section">
+            <div class="controls">
+                <button id="playBtn" onclick="togglePlay()">PLAY ▶️</button>
+                <div class="bpm-box">
+                    <label>BPM</label>
+                    <input type="number" id="bpm" value="140" onchange="updateBPM()">
+                </div>
+            </div>
 
-        <div class="social-links">
-            <a href="https://www.instagram.com/ch_akash_111?igsh=a2V2YnI1cXpkMzdu" class="btn insta">Instagram</a>
-            <a href="https://youtube.com/@akash_yt517?si=Ti5bpQwMO5Klh4wx" class="btn yt">YouTube</a>
+            <div class="sequencer">
+                <div class="track">
+                    <span class="label">KICK</span>
+                    <div class="steps" data-sound="kick"></div>
+                </div>
+                <div class="track">
+                    <span class="label">SNARE</span>
+                    <div class="steps" data-sound="snare"></div>
+                </div>
+                <div class="track">
+                    <span class="label">HI-HAT</span>
+                    <div class="steps" data-sound="hihat"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="music-section">
-            <audio id="myBeat" preload="auto">
-                <source src="https://files.catbox.moe/qgnhtv.mp3" type="audio/mpeg">
-            </audio>
-            <button onclick="toggleMusic()" class="btn music-btn" id="pBtn">Play Beat 🎵</button>
-        </div>
-
-        <div class="about-section">
-            <p>👋 Main abhi <b>Web Development</b> aur <b>Music</b> seekh raha hoon. Ye meri pehli website hai jo maine mobile par banayi hai!</p>
+        <div id="code-section" style="display:none;">
+            <div class="content-box">
+                <h3>My Journey</h3>
+                <p>SoloLearn par HTML/CSS seekh raha hoon. Ravan project par kaam chalu hai!</p>
+            </div>
         </div>
     </div>
-   <div class="bpm-container">
-     <h2 class="neon-text">⚡ BPM Real-Time Detector</h2>
-     <p>Apna track upload karo aur magic dekho!</p>
-    
-    <div class="upload-area" id="drop-zone">
-        <input type="file" id="audio-file" accept="audio/*" hidden>
-        <label for="audio-file" class="upload-btn">📁 Choose Audio File</label>
-    </div>
 
-    <div id="loader" class="loader" style="display: none;">Analyzing Beats... 🥁</div>
-    
-    <div class="result-box">
-        <span id="bpm-value">--</span>
-        <span class="label">BPM</span>
-    </div>
-   </div>
     <script>
-    var song = document.getElementById("myBeat");
-    var pBtn = document.getElementById("pBtn");
-    var card = document.querySelector(".card");
+        // --- BEAT LAB JAVASCRIPT LOGIC ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        let isPlaying = false;
+        let currentStep = 0;
+        let nextStepTime = 0;
+        let tempo = 140;
 
-    let audioCtx, source, analyser, canvas, ctx, bufferLength, dataArray;
+        // Grid Generation
+        document.querySelectorAll('.steps').forEach(container => {
+            for (let i = 0; i < 8; i++) {
+                const step = document.createElement('div');
+                step.classList.add('step');
+                step.onclick = () => {
+                    if (audioCtx.state === 'suspended') audioCtx.resume();
+                    step.classList.toggle('active');
+                };
+                container.appendChild(step);
+            }
+        });
 
-    function toggleMusic() {
-        if (song.paused) {
-            song.play().then(() => {
-                pBtn.innerHTML = "Pause Beat ⏸️";
-                card.classList.add("playing");
-                // Visualizer ko start karo
-                if (!audioCtx) {
-                    initVisualizer();
-                }
-            }).catch(err => {
-                alert("Bhai, pehle screen par kahin touch karo!");
+        function playSound(type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+
+            if (type === 'kick') {
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                gain.gain.setValueAtTime(1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+            } else if (type === 'snare') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(100, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+            } else {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(10000, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            }
+            osc.start(); osc.stop(audioCtx.currentTime + 0.5);
+        }
+
+        function scheduler() {
+            while (nextStepTime < audioCtx.currentTime + 0.1) {
+                playStep();
+                nextNote();
+            }
+            if (isPlaying) requestAnimationFrame(scheduler);
+        }
+
+        function playStep() {
+            document.querySelectorAll('.track').forEach(track => {
+                const allSteps = track.querySelectorAll('.step');
+                const step = allSteps[currentStep];
+                const soundType = track.querySelector('.steps').dataset.sound;
+                document.querySelectorAll('.step').forEach(s => s.classList.remove('playing'));
+                step.classList.add('playing');
+                if (step.classList.contains('active')) playSound(soundType);
             });
-        } else {
-            song.pause();
-            pBtn.innerHTML = "Play Beat 🎵";
-            card.classList.remove("playing");
         }
-    }
 
-    function initVisualizer() {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioCtx.createAnalyser();
-        source = audioCtx.createMediaElementSource(song);
-        source.connect(analyser);
-        analyser.connect(audioCtx.destination);
-
-        analyser.fftSize = 64;
-        bufferLength = analyser.frequencyBinCount;
-        dataArray = new Uint8Array(bufferLength);
-
-        canvas = document.getElementById('visualizer');
-        ctx = canvas.getContext('2d');
-        draw();
-    }
-
-    function draw() {
-        requestAnimationFrame(draw);
-        analyser.getByteFrequencyData(dataArray);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        let barWidth = (canvas.width / bufferLength) * 2;
-        let x = 0;
-        for (let i = 0; i < bufferLength; i++) {
-            let barHeight = dataArray[i] / 4;
-            ctx.fillStyle = "#00ffcc"; // Neon Green
-            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-            x += barWidth + 2;
+        function nextNote() {
+            nextStepTime += (60.0 / tempo / 2);
+            currentStep = (currentStep + 1) % 8;
         }
-    }
 
-    // --- BPM DETECTOR ---
+        function togglePlay() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            isPlaying = !isPlaying;
+            document.getElementById('playBtn').innerText = isPlaying ? "STOP ⏹️" : "PLAY ▶️";
+            if (isPlaying) { currentStep = 0; nextStepTime = audioCtx.currentTime; scheduler(); }
+        }
+
+        function updateBPM() { tempo = document.getElementById('bpm').value; }
+
+        function showSection(section) {
+            document.getElementById('beat-section').style.display = section === 'beat' ? 'block' : 'none';
+            document.getElementById('code-section').style.display = section === 'code' ? 'block' : 'none';
+            const btns = document.querySelectorAll('.nav-btn');
+            btns[0].classList.toggle('active', section === 'beat');
+            btns[1].classList.toggle('active', section === 'code');
+        }
+    </script>
+</body>
+</html>
     document.getElementById('audio-file').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
