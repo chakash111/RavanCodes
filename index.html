@@ -49,136 +49,79 @@
     </div>
    </div>
     <script>
-      var song = document.getElementById("myBeat");
-      var pBtn = document.getElementById("pBtn");
-      var card = document.querySelector(".card");
+    var song = document.getElementById("myBeat");
+    var pBtn = document.getElementById("pBtn");
+    var card = document.querySelector(".card");
 
-      // Page khulte hi loading shuru kar do taaki music ready rahe
-      song.load();
-
-      function toggleMusic() {
-        // Agar net slow hai aur file load nahi hui
-        if (song.readyState === 0) {
-          pBtn.innerHTML = "Connecting... 🛰️";
-          return;
-        }
-
-        if (song.paused) {
-          pBtn.innerHTML = "Loading... ⏳";
-          song.play().then(() => {
-            pBtn.innerHTML = "Pause Beat ⏸️";
-            card.classList.add("playing"); // Isse pulse animation chalu hogi
-          }).catch(err => {
-            alert("Bhai, pehle screen par kahin touch karo, phir play dabao!");
-          });
-        } else {
-          song.pause();
-          pBtn.innerHTML = "Play Beat 🎵";
-          card.classList.remove("playing"); // Animation band
-            <canvas id="visualizer"></canvas>
-        }
-      }
-        // --- BPM DETECTOR LOGIC ---
-document.getElementById('audio-file').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const bpmDisplay = document.getElementById('bpm-value');
-    const loader = document.getElementById('loader');
-    
-    loader.style.display = 'block'; // Loading dikhao
-    bpmDisplay.innerText = '--';
-
-    const reader = new FileReader();
-    reader.onload = function(event) {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        audioContext.decodeAudioData(event.target.result, function(buffer) {
-            // Offline context for fast processing
-            const offlineContext = new OfflineAudioContext(1, buffer.length, buffer.sampleRate);
-            const source = offlineContext.createBufferSource();
-            source.buffer = buffer;
-
-            // Low-pass filter to catch the kicks/bass
-            const filter = offlineContext.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.value = 150; 
-
-            source.connect(filter);
-            filter.connect(offlineContext.destination);
-            source.start(0);
-
-            offlineContext.startRendering().then(function(renderedBuffer) {
-                // Yahan hum peaks calculate kar rahe hain
-                const data = renderedBuffer.getChannelData(0);
-                let peaks = [];
-                for (let i = 0; i < data.length; i += 441) { 
-                    if (data[i] > 0.8) peaks.push(i);
-                }
-
-                let intervals = [];
-                for (let i = 1; i < peaks.length; i++) {
-                    intervals.push(peaks[i] - peaks[i-1]);
-                }
-
-                const medianInterval = intervals.sort((a, b) => a - b)[Math.floor(intervals.length / 2)];
-                let bpm = (60 * buffer.sampleRate) / medianInterval;
-                
-                // Normalizing (Trap/Hip-hop range)
-                while (bpm < 70) bpm *= 2;
-                while (bpm > 180) bpm /= 2;
-
-                bpmDisplay.innerText = Math.round(bpm);
-                loader.style.display = 'none'; // Loading band
-            });
-        });
-    };
-    reader.readAsArrayBuffer(file);
-});
-      </script>
     let audioCtx, source, analyser, canvas, ctx, bufferLength, dataArray;
 
-function startVisualizer() {
-    if (!audioCtx) {
+    function toggleMusic() {
+        if (song.paused) {
+            song.play().then(() => {
+                pBtn.innerHTML = "Pause Beat ⏸️";
+                card.classList.add("playing");
+                // Visualizer ko start karo
+                if (!audioCtx) {
+                    initVisualizer();
+                }
+            }).catch(err => {
+                alert("Bhai, pehle screen par kahin touch karo!");
+            });
+        } else {
+            song.pause();
+            pBtn.innerHTML = "Play Beat 🎵";
+            card.classList.remove("playing");
+        }
+    }
+
+    function initVisualizer() {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
-        // Tera audio element "myBeat" hai
-        const audioEle = document.getElementById('myBeat');
-        source = audioCtx.createMediaElementSource(audioEle);
+        source = audioCtx.createMediaElementSource(song);
         source.connect(analyser);
         analyser.connect(audioCtx.destination);
+
+        analyser.fftSize = 64;
+        bufferLength = analyser.frequencyBinCount;
+        dataArray = new Uint8Array(bufferLength);
+
+        canvas = document.getElementById('visualizer');
+        ctx = canvas.getContext('2d');
+        draw();
     }
 
-    analyser.fftSize = 64; // Bars ki sankhya (kam rakhoge toh moti bars banengi)
-    bufferLength = analyser.frequencyBinCount;
-    dataArray = new Uint8Array(bufferLength);
-
-    canvas = document.getElementById('visualizer');
-    ctx = canvas.getContext('2d');
-
-    draw();
-}
-
-function draw() {
-    requestAnimationFrame(draw);
-    analyser.getByteFrequencyData(dataArray);
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    let barWidth = (canvas.width / bufferLength) * 2.5;
-    let barHeight;
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-        barHeight = dataArray[i] / 2;
-
-        // Color theme: Neon Green to Purple
-        ctx.fillStyle = `rgb(0, 255, 204)`; 
-        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-
-        x += barWidth + 1;
+    function draw() {
+        requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let barWidth = (canvas.width / bufferLength) * 2;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i++) {
+            let barHeight = dataArray[i] / 4;
+            ctx.fillStyle = "#00ffcc"; // Neon Green
+            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+            x += barWidth + 2;
+        }
     }
-}
+
+    // --- BPM DETECTOR ---
+    document.getElementById('audio-file').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const bpmDisplay = document.getElementById('bpm-value');
+        bpmDisplay.innerText = 'Wait...';
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const tempCtx = new (window.AudioContext || window.webkitAudioContext)();
+            tempCtx.decodeAudioData(event.target.result, function(buffer) {
+                // Yahan 140 default placeholder for testing
+                bpmDisplay.innerText = '140'; 
+            });
+        };
+        reader.readAsArrayBuffer(file);
+    });
+</script>
+
         
 </body>
 </html>
