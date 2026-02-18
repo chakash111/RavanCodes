@@ -51,29 +51,40 @@
             }
         });
 
-        function playSound(type) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            
-            if (type === 'kick') {
-                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-                gain.gain.setValueAtTime(1, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-            } else if (type === 'snare') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(100, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-            } else {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(10000, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-            }
-            osc.start(); osc.stop(audioCtx.currentTime + 0.2);
-        }
+        // Asli Samples ka Logic
+    function playSound(type) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter(); // Mastering Filter
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === 'kick') {
+        // Heavy 808 Trap Kick Feel
+        filter.type = "lowpass";
+        osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        gain.gain.setValueAtTime(1.5, audioCtx.currentTime); // Bass Boost
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+    } else if (type === 'snare') {
+        // Crispy Trap Snare
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(250, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    } else {
+        // Sharp Hi-Hat
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(12000, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    }
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.3);
+    }
+
 
         function scheduler() {
             while (nextStepTime < audioCtx.currentTime + 0.1) {
