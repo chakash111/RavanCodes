@@ -1,78 +1,149 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ravan Code Lab</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Ravan Code Lab PRO</title>
+
+<style>
+body{
+  margin:0;
+  padding:10px;
+  background:#0d0d0d;
+  color:white;
+  font-family:Arial;
+}
+
+h1,h3{
+  text-align:center;
+}
+
+.toolbar{
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.toolbar button{
+  padding:8px 14px;
+  margin:4px;
+  border:none;
+  border-radius:8px;
+  background:#ff0057;
+  color:white;
+  font-weight:bold;
+}
+
+.css-tools{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:10px;
+}
+
+.css-tools button{
+  padding:6px 10px;
+  font-size:12px;
+  background:#222;
+  color:white;
+  border:none;
+  border-radius:6px;
+}
+
+textarea{
+  width:100%;
+  height:150px;
+  background:#1a1a1a;
+  color:#00ff88;
+  border:1px solid #333;
+  border-radius:10px;
+  padding:10px;
+  font-size:15px;
+  margin-bottom:10px;
+  box-sizing:border-box;
+  font-family:monospace;
+}
+
+iframe{
+  width:100%;
+  height:260px;
+  background:white;
+  border:none;
+  border-radius:10px;
+}
+</style>
 </head>
+
 <body>
 
-<h1>💻 Ravan Code Lab</h1>
+<h1>💻 Ravan Code Lab PRO</h1>
 
-<!-- TOOLBAR -->
 <div class="toolbar">
-  <button onclick="addCode('<h1>Heading</h1>')">H1</button>
-  <button onclick="addCode('<p>Paragraph</p>')">Text</button>
-  <button onclick="addCode('<button>Click</button>')">Button</button>
   <button onclick="runCode()">▶ Run</button>
-  <button onclick="clearCode()">🗑</button>
+  <button onclick="clearAll()">🗑 Clear</button>
 </div>
 
-<!-- SYMBOL BAR -->
-<div class="symbol-bar">
-  <button onclick="insertSymbol('<')">&lt;</button>
-  <button onclick="insertSymbol('>')">&gt;</button>
-  <button onclick="insertSymbol('/')">/</button>
-  <button onclick="insertSymbol('=')">=</button>
-  <button onclick="insertSymbol('\"')">"</button>
+<h3>HTML</h3>
+<textarea id="htmlCode" placeholder="Write HTML here..."></textarea>
+
+<h3>CSS Shortcuts</h3>
+<div class="css-tools">
+  <button onclick="addCSS('color:red;')">Text Red</button>
+  <button onclick="addCSS('color:blue;')">Text Blue</button>
+  <button onclick="addCSS('background:black;')">BG Black</button>
+  <button onclick="addCSS('background:yellow;')">BG Yellow</button>
+  <button onclick="addCSS('text-align:center;')">Center</button>
+  <button onclick="addCSS('font-size:30px;')">Big Text</button>
+  <button onclick="addCSS('border:2px solid red;')">Border</button>
+  <button onclick="addCSS('border-radius:10px;')">Round</button>
+  <button onclick="addCSS('padding:10px;')">Padding</button>
+  <button onclick="addCSS('margin:10px;')">Margin</button>
+  <button onclick="addCSS('box-shadow:0 0 10px black;')">Shadow</button>
 </div>
 
-<textarea id="codeArea" placeholder="Yaha coding likh..."></textarea>
+<h3>CSS</h3>
+<textarea id="cssCode" placeholder="Write CSS here..."></textarea>
 
 <iframe id="preview"></iframe>
 
 <script>
-let codeArea = document.getElementById("codeArea");
+
+let htmlBox = document.getElementById("htmlCode");
+let cssBox = document.getElementById("cssCode");
 
 /* AUTO SAVE */
-codeArea.value = localStorage.getItem("savedCode") || "";
+htmlBox.value = localStorage.getItem("htmlData") || "";
+cssBox.value = localStorage.getItem("cssData") || "";
 
-codeArea.addEventListener("input", ()=>{
-  localStorage.setItem("savedCode", codeArea.value);
+htmlBox.addEventListener("input", ()=>{
+  localStorage.setItem("htmlData", htmlBox.value);
 });
 
-/* QUICK CODE */
-function addCode(text){
-  codeArea.value += "\n" + text;
-  localStorage.setItem("savedCode", codeArea.value);
-}
+cssBox.addEventListener("input", ()=>{
+  localStorage.setItem("cssData", cssBox.value);
+});
 
-/* INSERT SYMBOL AT CURSOR */
-function insertSymbol(sym){
-  let start = codeArea.selectionStart;
-  let end = codeArea.selectionEnd;
-  let text = codeArea.value;
-
-  codeArea.value = text.substring(0,start) + sym + text.substring(end);
-  codeArea.focus();
-  codeArea.selectionStart = codeArea.selectionEnd = start + sym.length;
-
-  localStorage.setItem("savedCode", codeArea.value);
-}
-
-/* RUN CODE */
+/* RUN */
 function runCode(){
-  document.getElementById("preview").srcdoc = codeArea.value;
+  let finalCode =
+  "<style>" + cssBox.value + "</style>" + htmlBox.value;
+  document.getElementById("preview").srcdoc = finalCode;
 }
 
 /* CLEAR */
-function clearCode(){
-  codeArea.value = "";
-  localStorage.removeItem("savedCode");
+function clearAll(){
+  htmlBox.value = "";
+  cssBox.value = "";
+  localStorage.clear();
 }
 
-/* AUTO RUN */
+/* CSS SHORTCUT */
+function addCSS(text){
+  cssBox.value += "\n" + text;
+  localStorage.setItem("cssData", cssBox.value);
+}
+
+/* AUTO RUN ON LOAD */
 runCode();
+
 </script>
 
 </body>
