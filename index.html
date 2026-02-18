@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAVAN HUB</title>
+    <title>RAVAN HUB | Pro Beat Lab</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="card">
+    <div class="card" id="mainCard">
         <h2>RAVAN HUB</h2>
         <div class="nav">
             <button id="btn-beat" class="nav-btn active" onclick="showSection('beat')">🎹 Beat Lab</button>
@@ -21,6 +21,7 @@
                     BPM <input type="number" id="bpm" value="140" onchange="updateBPM()">
                 </div>
             </div>
+            
             <div class="sequencer">
                 <div class="track"><span class="label">KICK</span><div class="steps" data-sound="kick"></div></div>
                 <div class="track"><span class="label">SNARE</span><div class="steps" data-sound="snare"></div></div>
@@ -29,8 +30,8 @@
         </div>
 
         <div id="code-section" style="display:none;">
-            <h3 style="color:#00ffcc; margin-top:0;">My Study</h3>
-            <p>Main abhi <b>Web Development</b> aur <b>Music</b> seekh raha hoon. Ye meri pehli website hai jo maine mobile par banayi hai!</p>
+            <h3>Code & Create</h3>
+            <p>SoloLearn par <b>HTML/CSS</b> seekh raha hoon. 'Ravan' project ab ek pro hub ban chuka hai!</p>
         </div>
     </div>
 
@@ -38,9 +39,9 @@
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         let isPlaying = false, currentStep = 0, nextStepTime = 0, tempo = 140;
 
-        // Step buttons generate karna
+        // 16 Steps Generate karna (FL Studio standard)
         document.querySelectorAll('.steps').forEach(container => {
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < 16; i++) {
                 const step = document.createElement('div');
                 step.classList.add('step');
                 step.onclick = () => { 
@@ -51,40 +52,34 @@
             }
         });
 
-        // Asli Samples ka Logic
-    function playSound(type) {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    const filter = audioCtx.createBiquadFilter(); // Mastering Filter
+        function playSound(type) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
 
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-
-    if (type === 'kick') {
-        // Heavy 808 Trap Kick Feel
-        filter.type = "lowpass";
-        osc.frequency.setValueAtTime(150, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-        gain.gain.setValueAtTime(1.5, audioCtx.currentTime); // Bass Boost
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
-    } else if (type === 'snare') {
-        // Crispy Trap Snare
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(250, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-    } else {
-        // Sharp Hi-Hat
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(12000, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    }
-    
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.3);
-    }
-
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (type === 'kick') {
+                filter.type = "lowpass";
+                osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+                gain.gain.setValueAtTime(1.2, audioCtx.currentTime);
+                // Pulse effect on card for Kick
+                document.getElementById('mainCard').classList.add('pulse');
+                setTimeout(() => document.getElementById('mainCard').classList.remove('pulse'), 100);
+            } else if (type === 'snare') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            } else {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(12000, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            }
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+        }
 
         function scheduler() {
             while (nextStepTime < audioCtx.currentTime + 0.1) {
@@ -104,19 +99,15 @@
         }
 
         function nextNote() { 
-            nextStepTime += (60.0 / tempo / 2); 
-            currentStep = (currentStep + 1) % 8; 
+            nextStepTime += (60.0 / tempo / 4); // 16th notes
+            currentStep = (currentStep + 1) % 16; 
         }
 
         function togglePlay() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             isPlaying = !isPlaying;
             document.getElementById('playBtn').innerText = isPlaying ? "STOP ⏹️" : "PLAY ▶️";
-            if (isPlaying) { 
-                currentStep = 0; 
-                nextStepTime = audioCtx.currentTime; 
-                scheduler(); 
-            }
+            if (isPlaying) { currentStep = 0; nextStepTime = audioCtx.currentTime; scheduler(); }
         }
 
         function updateBPM() { tempo = document.getElementById('bpm').value; }
