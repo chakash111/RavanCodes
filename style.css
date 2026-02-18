@@ -1,45 +1,25 @@
-body {
-    background: #000;
-    color: #fff;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    font-family: sans-serif;
-}
+body { background: #080808; color: #fff; font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
 
-.card {
-    background: rgba(15, 15, 15, 0.98);
-    width: 95%;
-    max-width: 600px; /* Bada width for 16 steps */
-    padding: 20px;
-    border-radius: 20px;
-    border: 2px solid #00ffcc;
-    transition: 0.1s;
-    text-align: center;
-}
+.studio-container { background: #111; border: 3px solid #333; width: 95%; max-width: 700px; padding: 30px; border-radius: 10px; box-shadow: 0 0 50px rgba(0,0,0,1); }
 
-/* Kick Pulse Animation */
-.card.pulse {
-    box-shadow: 0 0 50px rgba(0, 255, 204, 0.6);
-    transform: scale(1.01);
-}
+.kick-pulse { border-color: #ff00ff; box-shadow: 0 0 40px rgba(255, 0, 255, 0.3); transform: scale(1.005); }
 
-.nav { display: flex; gap: 10px; margin-bottom: 20px; }
-.nav-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; background: #222; color: #888; }
-.nav-btn.active { background: #00ffcc; color: #000; font-weight: bold; }
+header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #222; padding-bottom: 15px; }
 
-.controls { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-#playBtn { padding: 10px 20px; background: #ff00ff; border: none; border-radius: 5px; color: #fff; font-weight: bold; }
+.file-input label { background: #00ffcc; color: #000; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+#songUpload { display: none; }
 
-.sequencer { overflow-x: auto; padding-bottom: 10px; }
-.track { display: flex; align-items: center; margin-bottom: 12px; gap: 8px; min-width: 500px; }
-.label { width: 45px; font-size: 10px; color: #00ffcc; font-weight: bold; }
-.steps { display: grid; grid-template-columns: repeat(16, 1fr); gap: 4px; flex: 1; }
+.main-display { background: #000; padding: 20px; margin: 20px 0; border: 1px solid #00ffcc; border-radius: 5px; font-family: 'Digital-7', sans-serif; color: #00ffcc; text-align: left; }
 
-.step { height: 35px; background: #2a2a2a; border-radius: 4px; border: 1px solid #333; }
-.step.active { background: #00ffcc; box-shadow: 0 0 15px #00ffcc; border: none; }
+.controls { display: flex; gap: 10px; margin-bottom: 20px; }
+button { flex: 1; padding: 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 16px; }
+#playBtn { background: #ff00ff; color: #fff; }
+#masterBtn { background: #222; color: #fff; border: 1px solid #444; }
+
+.sequencer { overflow-x: auto; }
+.track { display: flex; align-items: center; margin-bottom: 10px; gap: 10px; }
+.label { width: 80px; font-size: 12px; color: #aaa; }
+.steps { display: grid; grid-template-columns: repeat(16, 1fr); gap: 4px; flex: 1; min-width: 500px; }
+.step { height: 40px; background: #222; border-radius: 3px; border: 1px solid #333; cursor: pointer; }
+.step.active { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; }
 .step.playing { border: 2px solid #fff; }
-
-#code-section { background: rgba(0, 255, 204, 0.05); padding: 20px; border-radius: 15px; border: 1px dashed #00ffcc; text-align: left; }
