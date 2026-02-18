@@ -136,5 +136,49 @@ document.getElementById('audio-file').addEventListener('change', function(e) {
     reader.readAsArrayBuffer(file);
 });
       </script>
+    let audioCtx, source, analyser, canvas, ctx, bufferLength, dataArray;
+
+function startVisualizer() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        // Tera audio element "myBeat" hai
+        const audioEle = document.getElementById('myBeat');
+        source = audioCtx.createMediaElementSource(audioEle);
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+    }
+
+    analyser.fftSize = 64; // Bars ki sankhya (kam rakhoge toh moti bars banengi)
+    bufferLength = analyser.frequencyBinCount;
+    dataArray = new Uint8Array(bufferLength);
+
+    canvas = document.getElementById('visualizer');
+    ctx = canvas.getContext('2d');
+
+    draw();
+}
+
+function draw() {
+    requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(dataArray);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let barWidth = (canvas.width / bufferLength) * 2.5;
+    let barHeight;
+    let x = 0;
+
+    for (let i = 0; i < bufferLength; i++) {
+        barHeight = dataArray[i] / 2;
+
+        // Color theme: Neon Green to Purple
+        ctx.fillStyle = `rgb(0, 255, 204)`; 
+        ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+        x += barWidth + 1;
+    }
+}
+        
 </body>
 </html>
