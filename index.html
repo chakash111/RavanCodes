@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>Ravan Code Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,8 +12,8 @@
 <!-- TOOLBAR -->
 <div class="toolbar">
   <button onclick="addCode('<h1>Heading</h1>')">H1</button>
+  <button onclick="addCode('<p>Paragraph</p>')">Text</button>
   <button onclick="addCode('<button>Click</button>')">Button</button>
-  <button onclick="addCode('<p>Text</p>')">Text</button>
   <button onclick="runCode()">▶ Run</button>
   <button onclick="clearCode()">🗑</button>
 </div>
@@ -24,11 +25,9 @@
   <button onclick="insertSymbol('/')">/</button>
   <button onclick="insertSymbol('=')">=</button>
   <button onclick="insertSymbol('\"')">"</button>
-  <button onclick="insertSymbol('{')">{</button>
-  <button onclick="insertSymbol('}')">}</button>
 </div>
 
-<textarea id="codeArea" placeholder="Yaha code likho..."></textarea>
+<textarea id="codeArea" placeholder="Yaha coding likh..."></textarea>
 
 <iframe id="preview"></iframe>
 
@@ -37,6 +36,7 @@ let codeArea = document.getElementById("codeArea");
 
 /* AUTO SAVE */
 codeArea.value = localStorage.getItem("savedCode") || "";
+
 codeArea.addEventListener("input", ()=>{
   localStorage.setItem("savedCode", codeArea.value);
 });
@@ -62,10 +62,7 @@ function insertSymbol(sym){
 
 /* RUN CODE */
 function runCode(){
-  let preview = document.getElementById("preview").contentWindow.document;
-  preview.open();
-  preview.write(codeArea.value);
-  preview.close();
+  document.getElementById("preview").srcdoc = codeArea.value;
 }
 
 /* CLEAR */
@@ -74,6 +71,7 @@ function clearCode(){
   localStorage.removeItem("savedCode");
 }
 
+/* AUTO RUN */
 runCode();
 </script>
 
