@@ -7,35 +7,121 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    font-family: sans-serif;
-    overflow-x: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    overflow: hidden;
+}
+
+/* Moving Galaxy Background */
+body::before {
+    content: "";
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background-image: radial-gradient(#fff 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.1;
+    animation: moveStars 100s linear infinite;
+    z-index: -1;
+}
+
+@keyframes moveStars {
+    from { transform: translate(0, 0); }
+    to { transform: translate(-50%, -50%); }
 }
 
 .card {
-    background: #111;
+    background: rgba(15, 15, 15, 0.95);
     width: 90%;
-    max-width: 400px;
-    padding: 20px;
-    border-radius: 20px;
+    max-width: 380px;
+    padding: 25px;
+    border-radius: 25px;
     border: 2px solid #00ffcc;
-    box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+h2 { 
+    color: #00ffcc; 
+    margin-bottom: 20px; 
+    text-shadow: 0 0 10px #00ffcc;
+    letter-spacing: 2px;
+}
+
+.nav { display: flex; gap: 10px; margin-bottom: 25px; }
+.nav-btn { 
+    flex: 1; 
+    padding: 12px; 
+    border-radius: 12px; 
+    border: 1px solid #333; 
+    background: #222; 
+    color: #888; 
+    font-weight: bold;
+    cursor: pointer;
+}
+.nav-btn.active { 
+    background: #00ffcc; 
+    color: #000; 
+    border-color: #00ffcc;
+    box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+}
+
+/* Beat Lab Styling */
+.controls { 
+    background: #1a1a1a; 
+    padding: 15px; 
+    border-radius: 15px; 
+    margin-bottom: 20px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    border: 1px solid #333;
+}
+
+#playBtn { 
+    padding: 10px 20px; 
+    background: #ff00ff; 
+    border: none; 
+    border-radius: 8px; 
+    color: #fff; 
+    font-weight: bold;
+    box-shadow: 0 0 10px #ff00ff;
+}
+
+.bpm-box { font-size: 12px; color: #00ffcc; }
+#bpm { 
+    width: 45px; 
+    background: #333; 
+    color: #00ffcc; 
+    border: 1px solid #444; 
+    padding: 4px; 
+    border-radius: 4px;
     text-align: center;
 }
 
-h2 { color: #00ffcc; margin-top: 0; }
-
-.nav { display: flex; gap: 10px; margin-bottom: 20px; }
-.nav-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; background: #222; color: #888; cursor: pointer; }
-.nav-btn.active { background: #00ffcc; color: #000; font-weight: bold; }
-
-.controls { background: #1a1a1a; padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-#playBtn { padding: 10px 20px; background: #ff00ff; border: none; border-radius: 5px; color: #fff; font-weight: bold; }
-
 .track { display: flex; align-items: center; margin-bottom: 12px; gap: 10px; }
-.label { width: 50px; font-size: 10px; color: #00ffcc; font-weight: bold; text-align: left; }
-.steps { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; flex: 1; }
-.step { height: 30px; background: #333; border-radius: 4px; border: 1px solid #444; }
-.step.active { background: #00ffcc; box-shadow: 0 0 10px #00ffcc; border: none; }
-.step.playing { border: 2px solid #fff; }
+.label { width: 45px; font-size: 10px; color: #aaa; font-weight: bold; text-align: left; }
+.steps { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; flex: 1; }
 
-#code-section { background: rgba(0, 255, 204, 0.05); padding: 15px; border-radius: 10px; border: 1px dashed #00ffcc; text-align: left; }
+.step { 
+    height: 32px; 
+    background: #2a2a2a; 
+    border-radius: 6px; 
+    border: 1px solid #333;
+    transition: 0.2s;
+}
+.step.active { 
+    background: #00ffcc; 
+    box-shadow: 0 0 12px #00ffcc; 
+    border: none; 
+}
+.step.playing { border: 2px solid #fff; transform: scale(1.05); }
+
+#code-section { 
+    background: rgba(0, 255, 204, 0.05); 
+    padding: 20px; 
+    border-radius: 15px; 
+    border: 1px dashed #00ffcc; 
+    text-align: left;
+    line-height: 1.6;
+}
