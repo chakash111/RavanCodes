@@ -4,36 +4,54 @@
   <title>Ravan Code Lab</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <h1>💻 Ravan Code Lab</h1>
 
-<div>
+<div class="toolbar">
   <button onclick="addCode('<h1>Heading</h1>')">H1</button>
-  <button onclick="addCode('<button>Click Me</button>')">Button</button>
-  <button onclick="addCode('<p>Paragraph</p>')">Paragraph</button>
+  <button onclick="addCode('<button>Click</button>')">Button</button>
+  <button onclick="addCode('<p>Paragraph</p>')">Text</button>
+  <button onclick="runCode()">▶ Run</button>
+  <button onclick="clearCode()">🗑 Clear</button>
 </div>
 
-<textarea id="codeArea"></textarea>
-
-<br>
-<button onclick="runCode()">▶ Run Code</button>
+<textarea id="codeArea" placeholder="Yaha code likho..."></textarea>
 
 <iframe id="preview"></iframe>
 
 <script>
+let codeArea = document.getElementById("codeArea");
+
+/* AUTO SAVE */
+codeArea.value = localStorage.getItem("savedCode") || "";
+
+codeArea.addEventListener("input", () => {
+  localStorage.setItem("savedCode", codeArea.value);
+});
+
+/* ADD QUICK CODE */
 function addCode(text){
-  document.getElementById("codeArea").value += "\n" + text;
+  codeArea.value += "\n" + text;
+  localStorage.setItem("savedCode", codeArea.value);
 }
 
+/* RUN CODE */
 function runCode(){
-  let code = document.getElementById("codeArea").value;
   let preview = document.getElementById("preview").contentWindow.document;
   preview.open();
-  preview.write(code);
+  preview.write(codeArea.value);
   preview.close();
 }
+
+/* CLEAR */
+function clearCode(){
+  codeArea.value = "";
+  localStorage.removeItem("savedCode");
+}
+
+/* AUTO RUN on load */
+runCode();
 </script>
 
 </body>
