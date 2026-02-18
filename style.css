@@ -4,7 +4,6 @@ body{
   background:#0d0d0d;
   color:white;
   font-family:Arial;
-  overflow-x:hidden;
 }
 
 h1{
@@ -13,16 +12,13 @@ h1{
   margin:10px 0;
 }
 
-/* TOOLBAR */
 .toolbar{
   text-align:center;
-  margin-bottom:8px;
 }
 
 .toolbar button{
   margin:4px;
   padding:10px 14px;
-  font-size:15px;
   border:none;
   border-radius:10px;
   background:#ff0057;
@@ -30,35 +26,26 @@ h1{
   font-weight:bold;
 }
 
-/* SYMBOL BAR (SCROLLABLE) */
 .symbol-bar{
   display:flex;
   overflow-x:auto;
   gap:6px;
-  padding:6px 4px;
-  margin-bottom:8px;
+  padding:6px;
+  margin:8px 0;
   background:#111;
   border-radius:10px;
-  -webkit-overflow-scrolling:touch;
-}
-
-.symbol-bar::-webkit-scrollbar{
-  display:none;
 }
 
 .symbol-bar button{
   flex:0 0 auto;
   min-width:45px;
   padding:10px;
-  font-size:16px;
   border:none;
   border-radius:8px;
   background:#ff0057;
   color:white;
-  font-weight:bold;
 }
 
-/* EDITOR */
 textarea{
   width:100%;
   height:220px;
@@ -67,15 +54,14 @@ textarea{
   color:#00ff88;
   border:1px solid #333;
   border-radius:10px;
-  padding:12px;
+  padding:10px;
   box-sizing:border-box;
   font-family:monospace;
 }
 
-/* PREVIEW */
 iframe{
   width:100%;
-  height:280px;
+  height:260px;
   margin-top:10px;
   border:none;
   border-radius:10px;
