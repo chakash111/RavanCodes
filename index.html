@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Ravan Code Lab Mini Project</title>
+<title>Ravan Code Lab PRO</title>
 
 <style>
 body{
@@ -18,7 +18,6 @@ body{
   text-align:center;
   margin-bottom:10px;
 }
-
 .toolbar button{
   padding:8px 14px;
   margin:4px;
@@ -32,14 +31,13 @@ body{
 /* Symbol Bar */
 .symbol-bar{
   display:flex;
-  overflow-x:auto;
+  flex-wrap:wrap;
   gap:6px;
   padding:6px;
   margin-bottom:10px;
   background:#111;
   border-radius:8px;
 }
-
 .symbol-bar button{
   flex:0 0 auto;
   padding:6px 10px;
@@ -56,7 +54,6 @@ body{
   gap:6px;
   margin-bottom:10px;
 }
-
 .css-tools button{
   padding:6px 10px;
   font-size:12px;
@@ -92,7 +89,7 @@ iframe{
 
 <body>
 
-<h1>💻 Ravan Mini Project</h1>
+<h1>💻 Ravan Code Lab PRO</h1>
 
 <div class="toolbar">
   <button onclick="runCode()">▶ Run</button>
@@ -106,6 +103,16 @@ iframe{
   <button onclick="insertHTML('/')">/</button>
   <button onclick="insertHTML('=')">=</button>
   <button onclick="insertHTML('\"')">"</button>
+  <button onclick="insertHTML('\'')">'</button>
+  <button onclick="insertHTML('.')">.</button>
+  <button onclick="insertHTML(';')">;</button>
+  <button onclick="insertHTML(':')">:</button>
+  <button onclick="insertHTML('{')">{</button>
+  <button onclick="insertHTML('}')">}</button>
+  <button onclick="insertHTML('(')">(</button>
+  <button onclick="insertHTML(')')">)</button>
+  <button onclick="insertHTML('!')">!</button>
+  <button onclick="insertHTML(',')">,</button>
 </div>
 
 <h3>HTML</h3>
@@ -142,6 +149,85 @@ iframe{
   <button onclick="addCSS('text-align:center;')">Center</button>
   <button onclick="addCSS('text-align:left;')">Left</button>
   <button onclick="addCSS('text-align:right;')">Right</button>
+
+  <!-- Padding & Margin -->
+  <button onclick="addCSS('padding:10px;')">Padding 10px</button>
+  <button onclick="addCSS('padding:20px;')">Padding 20px</button>
+  <button onclick="addCSS('margin:10px;')">Margin 10px</button>
+  <button onclick="addCSS('margin:20px;')">Margin 20px</button>
+
+  <!-- Border & Radius -->
+  <button onclick="addCSS('border:2px solid red;')">Border</button>
+  <button onclick="addCSS('border-radius:10px;')">Round</button>
+
+  <!-- Shadow -->
+  <button onclick="addCSS('box-shadow:0 0 10px black;')">Shadow</button>
+</div>
+
+<h3>CSS</h3>
+<textarea id="cssCode" placeholder="Write CSS here..."></textarea>
+
+<iframe id="preview"></iframe>
+
+<script>
+let htmlBox = document.getElementById("htmlCode");
+let cssBox = document.getElementById("cssCode");
+
+/* Auto Save */
+htmlBox.value = localStorage.getItem("htmlData") || htmlBox.value;
+cssBox.value = localStorage.getItem("cssData") || "";
+
+htmlBox.addEventListener("input", ()=>{
+  localStorage.setItem("htmlData", htmlBox.value);
+});
+
+cssBox.addEventListener("input", ()=>{
+  localStorage.setItem("cssData", cssBox.value);
+});
+
+/* Run Code */
+function runCode(){
+  let finalCode =
+    "<style>" + cssBox.value + "</style>" + htmlBox.value;
+  document.getElementById("preview").srcdoc = finalCode;
+}
+
+/* Clear */
+function clearAll(){
+  htmlBox.value = "";
+  cssBox.value = "";
+  localStorage.clear();
+  runCode();
+}
+
+/* HTML Symbol Insert */
+function insertHTML(sym){
+  let start = htmlBox.selectionStart;
+  let end = htmlBox.selectionEnd;
+  let text = htmlBox.value;
+
+  htmlBox.value =
+    text.substring(0,start) + sym + text.substring(end);
+
+  htmlBox.focus();
+  htmlBox.selectionStart = htmlBox.selectionEnd = start + sym.length;
+
+  localStorage.setItem("htmlData", htmlBox.value);
+}
+
+/* CSS Shortcut with instant run */
+function addCSS(text){
+  cssBox.value += "\n" + text;
+  localStorage.setItem("cssData", cssBox.value);
+  runCode(); // instant preview
+}
+
+/* Auto Run */
+runCode();
+</script>
+
+</body>
+</html>  <button onclick="addCSS('text-align:right;')">Right</button>
 
   <!-- Padding & Margin -->
   <button onclick="addCSS('padding:10px;')">Padding 10px</button>
