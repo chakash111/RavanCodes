@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Ravan Code Lab PRO</title>
+<title>Ravan Code Lab Mini Project</title>
 
 <style>
 body{
@@ -13,12 +13,7 @@ body{
   font-family:Arial;
 }
 
-h1,h3{
-  text-align:center;
-  margin:8px 0;
-}
-
-/* TOOLBAR */
+/* Toolbar */
 .toolbar{
   text-align:center;
   margin-bottom:10px;
@@ -34,7 +29,7 @@ h1,h3{
   font-weight:bold;
 }
 
-/* SYMBOL BAR */
+/* Symbol Bar */
 .symbol-bar{
   display:flex;
   overflow-x:auto;
@@ -54,7 +49,7 @@ h1,h3{
   border-radius:6px;
 }
 
-/* CSS SHORTCUTS */
+/* CSS Shortcuts */
 .css-tools{
   display:flex;
   flex-wrap:wrap;
@@ -97,7 +92,7 @@ iframe{
 
 <body>
 
-<h1>💻 Ravan Code Lab PRO</h1>
+<h1>💻 Ravan Mini Project</h1>
 
 <div class="toolbar">
   <button onclick="runCode()">▶ Run</button>
@@ -114,7 +109,20 @@ iframe{
 </div>
 
 <h3>HTML</h3>
-<textarea id="htmlCode" placeholder="Write HTML here..."></textarea>
+<textarea id="htmlCode" placeholder="Write HTML here...">
+<div>
+  <h1>Header Section</h1>
+</div>
+
+<div>
+  <h2>About Me</h2>
+  <p>Main coding seekh raha hu 🔥</p>
+</div>
+
+<div>
+  <button>Contact Me</button>
+</div>
+</textarea>
 
 <h3>CSS Shortcuts</h3>
 <div class="css-tools">
@@ -142,6 +150,76 @@ iframe{
   <button onclick="addCSS('margin:20px;')">Margin 20px</button>
 
   <!-- Border & Radius -->
+  <button onclick="addCSS('border:2px solid red;')">Border</button>
+  <button onclick="addCSS('border-radius:10px;')">Round</button>
+
+  <!-- Shadow -->
+  <button onclick="addCSS('box-shadow:0 0 10px black;')">Shadow</button>
+</div>
+
+<h3>CSS</h3>
+<textarea id="cssCode" placeholder="Write CSS here..."></textarea>
+
+<iframe id="preview"></iframe>
+
+<script>
+let htmlBox = document.getElementById("htmlCode");
+let cssBox = document.getElementById("cssCode");
+
+/* Auto Save */
+htmlBox.value = localStorage.getItem("htmlData") || htmlBox.value;
+cssBox.value = localStorage.getItem("cssData") || "";
+
+htmlBox.addEventListener("input", ()=>{
+  localStorage.setItem("htmlData", htmlBox.value);
+});
+
+cssBox.addEventListener("input", ()=>{
+  localStorage.setItem("cssData", cssBox.value);
+});
+
+/* Run Code */
+function runCode(){
+  let finalCode =
+    "<style>" + cssBox.value + "</style>" + htmlBox.value;
+  document.getElementById("preview").srcdoc = finalCode;
+}
+
+/* Clear */
+function clearAll(){
+  htmlBox.value = "";
+  cssBox.value = "";
+  localStorage.clear();
+  runCode();
+}
+
+/* HTML Symbol Insert */
+function insertHTML(sym){
+  let start = htmlBox.selectionStart;
+  let end = htmlBox.selectionEnd;
+  let text = htmlBox.value;
+
+  htmlBox.value =
+    text.substring(0,start) + sym + text.substring(end);
+
+  htmlBox.focus();
+  htmlBox.selectionStart = htmlBox.selectionEnd = start + sym.length;
+
+  localStorage.setItem("htmlData", htmlBox.value);
+}
+
+/* CSS Shortcut */
+function addCSS(text){
+  cssBox.value += "\n" + text;
+  localStorage.setItem("cssData", cssBox.value);
+}
+
+/* Auto Run */
+runCode();
+</script>
+
+</body>
+</html>  <!-- Border & Radius -->
   <button onclick="addCSS('border:2px solid red;')">Border</button>
   <button onclick="addCSS('border-radius:10px;')">Round</button>
 
