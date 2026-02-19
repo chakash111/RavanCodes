@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Ravan Code Lab</title>
+<title>Ravan Code Lab Mini Task</title>
 
 <style>
 body{
@@ -12,95 +12,25 @@ body{
   color:white;
   font-family:Arial, sans-serif;
 }
-
-/* Toolbar */
-.toolbar{
-  text-align:center;
-  margin-bottom:10px;
-}
-.toolbar button{
-  padding:8px 14px;
-  margin:4px;
-  border:none;
-  border-radius:8px;
-  background:#ff0057;
-  color:white;
-  font-weight:bold;
-}
-
-/* Symbol Bar */
-.symbol-bar{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-  padding:5px;
-  margin-bottom:10px;
-  background:#111;
-  border-radius:8px;
-}
-.symbol-bar button{
-  flex:0 0 auto;
-  padding:5px 8px;
-  background:#333;
-  color:white;
-  border:none;
-  border-radius:6px;
-  font-size:14px;
-}
-
-/* CSS Shortcuts */
-.css-tools{
-  display:flex;
-  flex-wrap:wrap;
-  gap:5px;
-  margin-bottom:10px;
-}
-.css-tools button{
-  padding:5px 8px;
-  font-size:12px;
-  background:#222;
-  color:white;
-  border:none;
-  border-radius:6px;
-}
-
-/* Textareas */
-textarea{
-  width:100%;
-  height:150px;
-  background:#1a1a1a;
-  color:#00ff88;
-  border:1px solid #333;
-  border-radius:10px;
-  padding:10px;
-  font-size:15px;
-  margin-bottom:10px;
-  box-sizing:border-box;
-  font-family:monospace;
-}
-
-/* Preview */
-iframe{
-  width:100%;
-  height:260px;
-  background:white;
-  border:none;
-  border-radius:10px;
-}
+textarea{ width:100%; height:120px; margin-bottom:10px; border-radius:10px; background:#1a1a1a; color:#00ff88; padding:10px; font-family:monospace; font-size:15px; }
+iframe{ width:100%; height:300px; border:none; border-radius:10px; margin-top:10px; }
+button{ padding:6px 10px; margin:3px; border:none; border-radius:6px; background:#222; color:white; font-weight:bold; font-size:13px; }
+.toolbar button{ background:#ff0057; }
+.symbol-bar{ display:flex; flex-wrap:wrap; gap:5px; padding:5px; background:#111; border-radius:8px; margin-bottom:10px; }
+.symbol-bar button{ background:#333; }
+.css-tools{ display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
 </style>
 </head>
-
 <body>
 
-<h1>💻 Ravan Code Lab</h1>
+<h1>💻 Ravan Mini Task</h1>
 
-<!-- Toolbar -->
 <div class="toolbar">
   <button onclick="runCode()">▶ Run</button>
   <button onclick="clearAll()">🗑 Clear</button>
+  <button onclick="applyMiniTask()">💥 Apply Mini Task</button>
 </div>
 
-<!-- HTML Symbols -->
 <h3>HTML Symbols</h3>
 <div class="symbol-bar">
   <button onclick="insertHTML('<')">&lt;</button>
@@ -120,62 +50,12 @@ iframe{
   <button onclick="insertHTML('.')">.</button>
 </div>
 
-<!-- HTML Code Box -->
 <h3>HTML</h3>
-<textarea id="htmlCode" placeholder="Write HTML here...">
-<div>
-  <h1>Header Section</h1>
-</div>
+<textarea id="htmlCode" placeholder="Write HTML here..."></textarea>
 
-<div>
-  <h2>About Me</h2>
-  <p>Main coding seekh raha hu 🔥</p>
-</div>
-
-<div>
-  <button>Contact Me</button>
-</div>
-</textarea>
-
-<!-- CSS Shortcuts -->
-<h3>CSS Shortcuts</h3>
-<div class="css-tools">
-  <!-- Text Colors -->
-  <button onclick="addCSS('color:red;')">Red Text</button>
-  <button onclick="addCSS('color:blue;')">Blue Text</button>
-  <button onclick="addCSS('color:green;')">Green Text</button>
-  <button onclick="addCSS('color:white;')">White Text</button>
-
-  <!-- Background Colors -->
-  <button onclick="addCSS('background:black;')">BG Black</button>
-  <button onclick="addCSS('background:yellow;')">BG Yellow</button>
-  <button onclick="addCSS('background:purple;')">BG Purple</button>
-  <button onclick="addCSS('background:gray;')">BG Gray</button>
-
-  <!-- Alignment -->
-  <button onclick="addCSS('text-align:center;')">Center</button>
-  <button onclick="addCSS('text-align:left;')">Left</button>
-  <button onclick="addCSS('text-align:right;')">Right</button>
-
-  <!-- Padding & Margin -->
-  <button onclick="addCSS('padding:10px;')">Padding 10px</button>
-  <button onclick="addCSS('padding:20px;')">Padding 20px</button>
-  <button onclick="addCSS('margin:10px;')">Margin 10px</button>
-  <button onclick="addCSS('margin:20px;')">Margin 20px</button>
-
-  <!-- Border & Radius -->
-  <button onclick="addCSS('border:2px solid red;')">Border</button>
-  <button onclick="addCSS('border-radius:10px;')">Round</button>
-
-  <!-- Shadow -->
-  <button onclick="addCSS('box-shadow:0 0 10px black;')">Shadow</button>
-</div>
-
-<!-- CSS Code Box -->
 <h3>CSS</h3>
 <textarea id="cssCode" placeholder="Write CSS here..."></textarea>
 
-<!-- Preview -->
 <iframe id="preview"></iframe>
 
 <script>
@@ -183,29 +63,21 @@ let htmlBox = document.getElementById("htmlCode");
 let cssBox = document.getElementById("cssCode");
 
 /* Load from localStorage */
-htmlBox.value = localStorage.getItem("htmlData") || htmlBox.value;
+htmlBox.value = localStorage.getItem("htmlData") || "";
 cssBox.value = localStorage.getItem("cssData") || "";
 
 /* Save on input */
-htmlBox.addEventListener("input", ()=>{
-  localStorage.setItem("htmlData", htmlBox.value);
-});
-cssBox.addEventListener("input", ()=>{
-  localStorage.setItem("cssData", cssBox.value);
-});
+htmlBox.addEventListener("input", ()=>{ localStorage.setItem("htmlData", htmlBox.value); });
+cssBox.addEventListener("input", ()=>{ localStorage.setItem("cssData", cssBox.value); });
 
-/* Insert HTML symbols */
+/* Insert HTML symbol */
 function insertHTML(sym){
   let start = htmlBox.selectionStart;
   let end = htmlBox.selectionEnd;
   let text = htmlBox.value;
-
-  htmlBox.value =
-    text.substring(0,start) + sym + text.substring(end);
-
+  htmlBox.value = text.substring(0,start) + sym + text.substring(end);
   htmlBox.focus();
   htmlBox.selectionStart = htmlBox.selectionEnd = start + sym.length;
-
   localStorage.setItem("htmlData", htmlBox.value);
 }
 
@@ -216,7 +88,7 @@ function addCSS(text){
   runCode();
 }
 
-/* Run code */
+/* Run Code */
 function runCode(){
   let finalCode = "<style>" + cssBox.value + "</style>" + htmlBox.value;
   document.getElementById("preview").srcdoc = finalCode;
@@ -230,7 +102,55 @@ function clearAll(){
   runCode();
 }
 
-/* Initial run */
+/* Mini Task Apply */
+function applyMiniTask(){
+  htmlBox.value = `
+<div>
+  <h1>Header Section</h1>
+</div>
+
+<div>
+  <h2>About Me</h2>
+  <p>Main coding seekh raha hu 🔥</p>
+</div>
+
+<div>
+  <button>Contact Me</button>
+</div>
+  `;
+
+  cssBox.value = `
+/* Header */
+div:nth-child(1){
+  background:black;
+  color:white;
+  text-align:center;
+  padding:20px;
+  box-shadow:0 0 15px black;
+}
+
+/* About */
+div:nth-child(2){
+  background:purple;
+  color:green;
+  padding:10px;
+  margin:10px 0;
+}
+
+/* Contact */
+div:nth-child(3){
+  background:yellow;
+  color:blue;
+  text-align:center;
+  padding:10px;
+  border:2px solid red;
+  border-radius:10px;
+  box-shadow:0 0 10px black;
+}
+  `;
+  runCode();
+}
+
 runCode();
 </script>
 
