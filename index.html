@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>Ravan Code Lab PRO</title>
+<title>Ravan Code Lab</title>
 
 <style>
 body{
@@ -10,7 +10,7 @@ body{
   padding:10px;
   background:#0d0d0d;
   color:white;
-  font-family:Arial;
+  font-family:Arial, sans-serif;
 }
 
 /* Toolbar */
@@ -32,30 +32,31 @@ body{
 .symbol-bar{
   display:flex;
   flex-wrap:wrap;
-  gap:6px;
-  padding:6px;
+  gap:5px;
+  padding:5px;
   margin-bottom:10px;
   background:#111;
   border-radius:8px;
 }
 .symbol-bar button{
   flex:0 0 auto;
-  padding:6px 10px;
+  padding:5px 8px;
   background:#333;
   color:white;
   border:none;
   border-radius:6px;
+  font-size:14px;
 }
 
 /* CSS Shortcuts */
 .css-tools{
   display:flex;
   flex-wrap:wrap;
-  gap:6px;
+  gap:5px;
   margin-bottom:10px;
 }
 .css-tools button{
-  padding:6px 10px;
+  padding:5px 8px;
   font-size:12px;
   background:#222;
   color:white;
@@ -63,6 +64,7 @@ body{
   border-radius:6px;
 }
 
+/* Textareas */
 textarea{
   width:100%;
   height:150px;
@@ -77,6 +79,7 @@ textarea{
   font-family:monospace;
 }
 
+/* Preview */
 iframe{
   width:100%;
   height:260px;
@@ -89,13 +92,15 @@ iframe{
 
 <body>
 
-<h1>💻 Ravan Code Lab PRO</h1>
+<h1>💻 Ravan Code Lab</h1>
 
+<!-- Toolbar -->
 <div class="toolbar">
   <button onclick="runCode()">▶ Run</button>
   <button onclick="clearAll()">🗑 Clear</button>
 </div>
 
+<!-- HTML Symbols -->
 <h3>HTML Symbols</h3>
 <div class="symbol-bar">
   <button onclick="insertHTML('<')">&lt;</button>
@@ -104,17 +109,18 @@ iframe{
   <button onclick="insertHTML('=')">=</button>
   <button onclick="insertHTML('\"')">"</button>
   <button onclick="insertHTML('\'')">'</button>
-  <button onclick="insertHTML('.')">.</button>
-  <button onclick="insertHTML(';')">;</button>
-  <button onclick="insertHTML(':')">:</button>
   <button onclick="insertHTML('{')">{</button>
   <button onclick="insertHTML('}')">}</button>
   <button onclick="insertHTML('(')">(</button>
   <button onclick="insertHTML(')')">)</button>
+  <button onclick="insertHTML(';')">;</button>
+  <button onclick="insertHTML(':')">:</button>
   <button onclick="insertHTML('!')">!</button>
   <button onclick="insertHTML(',')">,</button>
+  <button onclick="insertHTML('.')">.</button>
 </div>
 
+<!-- HTML Code Box -->
 <h3>HTML</h3>
 <textarea id="htmlCode" placeholder="Write HTML here...">
 <div>
@@ -131,6 +137,7 @@ iframe{
 </div>
 </textarea>
 
+<!-- CSS Shortcuts -->
 <h3>CSS Shortcuts</h3>
 <div class="css-tools">
   <!-- Text Colors -->
@@ -164,43 +171,30 @@ iframe{
   <button onclick="addCSS('box-shadow:0 0 10px black;')">Shadow</button>
 </div>
 
+<!-- CSS Code Box -->
 <h3>CSS</h3>
 <textarea id="cssCode" placeholder="Write CSS here..."></textarea>
 
+<!-- Preview -->
 <iframe id="preview"></iframe>
 
 <script>
 let htmlBox = document.getElementById("htmlCode");
 let cssBox = document.getElementById("cssCode");
 
-/* Auto Save */
+/* Load from localStorage */
 htmlBox.value = localStorage.getItem("htmlData") || htmlBox.value;
 cssBox.value = localStorage.getItem("cssData") || "";
 
+/* Save on input */
 htmlBox.addEventListener("input", ()=>{
   localStorage.setItem("htmlData", htmlBox.value);
 });
-
 cssBox.addEventListener("input", ()=>{
   localStorage.setItem("cssData", cssBox.value);
 });
 
-/* Run Code */
-function runCode(){
-  let finalCode =
-    "<style>" + cssBox.value + "</style>" + htmlBox.value;
-  document.getElementById("preview").srcdoc = finalCode;
-}
-
-/* Clear */
-function clearAll(){
-  htmlBox.value = "";
-  cssBox.value = "";
-  localStorage.clear();
-  runCode();
-}
-
-/* HTML Symbol Insert */
+/* Insert HTML symbols */
 function insertHTML(sym){
   let start = htmlBox.selectionStart;
   let end = htmlBox.selectionEnd;
@@ -215,63 +209,20 @@ function insertHTML(sym){
   localStorage.setItem("htmlData", htmlBox.value);
 }
 
-/* CSS Shortcut with instant run */
+/* Add CSS + instant run */
 function addCSS(text){
   cssBox.value += "\n" + text;
   localStorage.setItem("cssData", cssBox.value);
-  runCode(); // instant preview
+  runCode();
 }
 
-/* Auto Run */
-runCode();
-</script>
-
-</body>
-</html>  <button onclick="addCSS('text-align:right;')">Right</button>
-
-  <!-- Padding & Margin -->
-  <button onclick="addCSS('padding:10px;')">Padding 10px</button>
-  <button onclick="addCSS('padding:20px;')">Padding 20px</button>
-  <button onclick="addCSS('margin:10px;')">Margin 10px</button>
-  <button onclick="addCSS('margin:20px;')">Margin 20px</button>
-
-  <!-- Border & Radius -->
-  <button onclick="addCSS('border:2px solid red;')">Border</button>
-  <button onclick="addCSS('border-radius:10px;')">Round</button>
-
-  <!-- Shadow -->
-  <button onclick="addCSS('box-shadow:0 0 10px black;')">Shadow</button>
-</div>
-
-<h3>CSS</h3>
-<textarea id="cssCode" placeholder="Write CSS here..."></textarea>
-
-<iframe id="preview"></iframe>
-
-<script>
-let htmlBox = document.getElementById("htmlCode");
-let cssBox = document.getElementById("cssCode");
-
-/* Auto Save */
-htmlBox.value = localStorage.getItem("htmlData") || htmlBox.value;
-cssBox.value = localStorage.getItem("cssData") || "";
-
-htmlBox.addEventListener("input", ()=>{
-  localStorage.setItem("htmlData", htmlBox.value);
-});
-
-cssBox.addEventListener("input", ()=>{
-  localStorage.setItem("cssData", cssBox.value);
-});
-
-/* Run Code */
+/* Run code */
 function runCode(){
-  let finalCode =
-    "<style>" + cssBox.value + "</style>" + htmlBox.value;
+  let finalCode = "<style>" + cssBox.value + "</style>" + htmlBox.value;
   document.getElementById("preview").srcdoc = finalCode;
 }
 
-/* Clear */
+/* Clear all */
 function clearAll(){
   htmlBox.value = "";
   cssBox.value = "";
@@ -279,101 +230,8 @@ function clearAll(){
   runCode();
 }
 
-/* HTML Symbol Insert */
-function insertHTML(sym){
-  let start = htmlBox.selectionStart;
-  let end = htmlBox.selectionEnd;
-  let text = htmlBox.value;
-
-  htmlBox.value =
-    text.substring(0,start) + sym + text.substring(end);
-
-  htmlBox.focus();
-  htmlBox.selectionStart = htmlBox.selectionEnd = start + sym.length;
-
-  localStorage.setItem("htmlData", htmlBox.value);
-}
-
-/* CSS Shortcut */
-function addCSS(text){
-  cssBox.value += "\n" + text;
-  localStorage.setItem("cssData", cssBox.value);
-}
-
-/* Auto Run */
+/* Initial run */
 runCode();
-</script>
-
-</body>
-</html>  <!-- Border & Radius -->
-  <button onclick="addCSS('border:2px solid red;')">Border</button>
-  <button onclick="addCSS('border-radius:10px;')">Round</button>
-
-  <!-- Shadow -->
-  <button onclick="addCSS('box-shadow:0 0 10px black;')">Shadow</button>
-</div>
-
-<h3>CSS</h3>
-<textarea id="cssCode" placeholder="Write CSS here..."></textarea>
-
-<iframe id="preview"></iframe>
-
-<script>
-
-let htmlBox = document.getElementById("htmlCode");
-let cssBox = document.getElementById("cssCode");
-
-/* AUTO SAVE */
-htmlBox.value = localStorage.getItem("htmlData") || "";
-cssBox.value = localStorage.getItem("cssData") || "";
-
-htmlBox.addEventListener("input", ()=>{
-  localStorage.setItem("htmlData", htmlBox.value);
-});
-
-cssBox.addEventListener("input", ()=>{
-  localStorage.setItem("cssData", cssBox.value);
-});
-
-/* RUN CODE */
-function runCode(){
-  let finalCode =
-    "<style>" + cssBox.value + "</style>" + htmlBox.value;
-  document.getElementById("preview").srcdoc = finalCode;
-}
-
-/* CLEAR */
-function clearAll(){
-  htmlBox.value = "";
-  cssBox.value = "";
-  localStorage.clear();
-  runCode();
-}
-
-/* HTML SYMBOL INSERT */
-function insertHTML(sym){
-  let start = htmlBox.selectionStart;
-  let end = htmlBox.selectionEnd;
-  let text = htmlBox.value;
-
-  htmlBox.value =
-    text.substring(0,start) + sym + text.substring(end);
-
-  htmlBox.focus();
-  htmlBox.selectionStart = htmlBox.selectionEnd = start + sym.length;
-
-  localStorage.setItem("htmlData", htmlBox.value);
-}
-
-/* CSS SHORTCUT */
-function addCSS(text){
-  cssBox.value += "\n" + text;
-  localStorage.setItem("cssData", cssBox.value);
-}
-
-/* AUTO RUN */
-runCode();
-
 </script>
 
 </body>
